@@ -67,9 +67,11 @@ bool Character::ApplyDamage(int damage,float invincibleTime)
 //移動処理
 void Character::Move(float elapsedTime, float vx, float vz, float speed)
 {
+
 	//移動方向ベクトルを設定
-	moveVecX = vx;
-	moveVecZ = vz;
+	/*moveVecX = vx;
+	moveVecZ = vz;*/
+	position.z -= move;
 
 	//最大速度設定
 	maxMoveSpeed = speed;

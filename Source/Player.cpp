@@ -33,6 +33,7 @@ void Player::Finalize()
 //更新処理
 void Player::Update(float elapsedTime)
 {
+	GamePad& gamePad = Input::Instance().GetGamePad();
 	//移動入力処理
 	InputMove(elapsedTime);
 	//オブジェクト行列を更新
@@ -40,7 +41,7 @@ void Player::Update(float elapsedTime)
 	//モデル行列更新
 	model->UpdateTransform();
 	//ジャンプ入力処理
-	InputJump();
+	/*InputJump();*/
 	//弾丸入力処理
 	InputProjectile();
 	//速力処理更新
@@ -51,12 +52,21 @@ void Player::Update(float elapsedTime)
 	CollisionPlayerVsEnemies();
 	//弾丸と敵の衝突判定
 	CollisitionProjectilesVsEnemies();
+
+	if (gamePad.GetButton() & GamePad::BTN_X)
+	{
+		move = 0.01;
+	}
+	else
+	{
+		move = 0.03;
+	}
 }
 
 //描画処理
 void Player::Render(const RenderContext& rc, ModelRenderer* renderer)
 {
-	renderer->Render(rc, transform, model, ShaderId::Lambert);
+	/*renderer->Render(rc, transform, model, ShaderId::Lambert);*/
 
 	//弾丸描画処理
 	projectileManager.Render(rc, renderer);
@@ -65,31 +75,31 @@ void Player::Render(const RenderContext& rc, ModelRenderer* renderer)
 //デバッグ用GUI描画
 void Player::DrawDebugGUI()
 {
-	ImVec2 pos = ImGui::GetMainViewport()->GetWorkPos();
-	ImGui::SetNextWindowPos(ImVec2(pos.x + 10, pos.y + 10), ImGuiCond_Once);
-	ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_FirstUseEver);
+	//ImVec2 pos = ImGui::GetMainViewport()->GetWorkPos();
+	//ImGui::SetNextWindowPos(ImVec2(pos.x + 10, pos.y + 10), ImGuiCond_Once);
+	//ImGui::SetNextWindowSize(ImVec2(300, 300), ImGuiCond_FirstUseEver);
 
-	if (ImGui::Begin("Player,nullptr,ImGuiWindowFlags_None"))
-	{
-		//トランスフォーム
-		if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
-		{
-			//位置
-			ImGui::InputFloat3("Positon", &position.x);
-			//回転
-			DirectX::XMFLOAT3 a;
-			a.x = DirectX::XMConvertToDegrees(angle.x);
-			a.y = DirectX::XMConvertToDegrees(angle.y);
-			a.z = DirectX::XMConvertToDegrees(angle.z);
-			ImGui::InputFloat3("Angle", &a.x);
-			angle.x = DirectX::XMConvertToRadians(a.x);
-			angle.y = DirectX::XMConvertToRadians(a.y);
-			angle.z = DirectX::XMConvertToRadians(a.z);
-			//スケール
-			ImGui::InputFloat3("Scale", &scale.x);
-		}
-	}
-	ImGui::End();
+	//if (ImGui::Begin("Player,nullptr,ImGuiWindowFlags_None"))
+	//{
+	//	//トランスフォーム
+	//	if (ImGui::CollapsingHeader("Transform", ImGuiTreeNodeFlags_DefaultOpen))
+	//	{
+	//		//位置
+	//		ImGui::InputFloat3("Positon", &position.x);
+	//		//回転
+	//		DirectX::XMFLOAT3 a;
+	//		a.x = DirectX::XMConvertToDegrees(angle.x);
+	//		a.y = DirectX::XMConvertToDegrees(angle.y);
+	//		a.z = DirectX::XMConvertToDegrees(angle.z);
+	//		ImGui::InputFloat3("Angle", &a.x);
+	//		angle.x = DirectX::XMConvertToRadians(a.x);
+	//		angle.y = DirectX::XMConvertToRadians(a.y);
+	//		angle.z = DirectX::XMConvertToRadians(a.z);
+	//		//スケール
+	//		ImGui::InputFloat3("Scale", &scale.x);
+	//	}
+	//}
+	//ImGui::End();
 }
 
 void Player::OnLanding()
@@ -158,19 +168,19 @@ void Player::InputMove(float elapsedTime)
 }
 
 //ジャンプ入力処理
-void Player::InputJump()
-{
-	GamePad& gamePad = Input::Instance().GetGamePad();
-	if (gamePad.GetButtonDown() & GamePad::BTN_A)
-	{
-		if (jumpCount < jumpLimit)
-		{
-			jumpCount++;
-			Jump(jumpSpeed);
-		}
-		
-	}
-}
+//void Player::InputJump()
+//{
+//	GamePad& gamePad = Input::Instance().GetGamePad();
+//	if (gamePad.GetButtonDown() & GamePad::BTN_A)
+//	{
+//		if (jumpCount < jumpLimit)
+//		{
+//			jumpCount++;
+//			Jump(jumpSpeed);
+//		}
+//		
+//	}
+//}
 
 
 //プレイヤーとエネミーとの衝突処理

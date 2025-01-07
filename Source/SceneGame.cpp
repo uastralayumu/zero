@@ -72,7 +72,8 @@ void SceneGame::Update(float elapsedTime)
 {
 	//カメラコントローラー更新処理
 	DirectX::XMFLOAT3 target = Player::Instance().GetPosition();
-	target.y += 0.5f;
+	target.z += 10.5f;
+	target.y += 1.7f;
 	cameraController->SetTarget(target);
 	cameraController->Update(elapsedTime);
 	//ステージ更新処理
@@ -117,14 +118,6 @@ void SceneGame::Render()
 		EffectManager::Instance().Render(rc.view, rc.projection);
 	}
 
-	// 3Dデバッグ描画
-	{
-		//プレイヤーデバッグプリミティブ描画
-		Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-
-		//エネミーデバッグプリミティブ描画
-		EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-	}
 
 	// 2Dスプライト描画
 	{
