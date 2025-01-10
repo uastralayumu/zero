@@ -109,5 +109,6 @@ protected:
 	float airControl = 0.3f;
 	DirectX::XMFLOAT3 velocity = { 0,0,0 };
 	bool isGround = false;
+	float move = 0.03f;
 
 };
