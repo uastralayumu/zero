@@ -5,7 +5,8 @@
 #include"EnemySlime.h"
 #include"Player.h"
 #include"EffectManager.h"
-
+#include"objectManager.h"
+#include"objectEnemy.h"
 // 初期化
 void SceneGame::Initialize()
 {
@@ -42,6 +43,14 @@ void SceneGame::Initialize()
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		enemyManager.Register(slime);
 	}
+	/*objectManager& objectManager = objectManager::Instance();*/
+	for (int i = 0; i < 2; ++i)
+	{
+		objectEnemy* object = new objectEnemy();
+		object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
+		object->SetTerritory(object->GetPosition(), 10.0f);
+		enemyManager.Register(object);
+	}
 }
 
 // 終了化
@@ -49,6 +58,8 @@ void SceneGame::Finalize()
 {
 	//エネミー終了化
 	EnemyManager::Instance().Clear();
+	//エネミー終了化
+	objectManager::Instance().Clear();
 	//カメラコントローラー終了化
 	if (cameraController != nullptr)
 	{
@@ -61,6 +72,12 @@ void SceneGame::Finalize()
 		delete stage;
 		stage = nullptr;
 	}
+	////オブジェクト終了化
+	//if (object != nullptr)
+	//{
+	//	delete object;
+	//	object = nullptr;
+	//}
 
 	//プレイヤー終了化
 	Player::Instance().Finalize();
@@ -77,10 +94,14 @@ void SceneGame::Update(float elapsedTime)
 	cameraController->Update(elapsedTime);
 	//ステージ更新処理
 	stage->Update(elapsedTime);
+	////オブジェクト
+	//object->Update(elapsedTime);
 	//プレイヤー更新処理
 	Player::Instance().Update(elapsedTime);
 	//エネミー更新処理
 	EnemyManager::Instance().Update(elapsedTime);
+	//オブジェクト更新処理
+	objectManager::Instance().Update(elapsedTime);
 	//エフェクト更新処理
 	EffectManager::Instance().Update(elapsedTime);
 }
@@ -108,10 +129,14 @@ void SceneGame::Render()
 	{
 		//ステージ描画
 		stage->Render(rc, modelRenderer);
+		////オブジェクト
+		//object->Render(rc, modelRenderer);
 		//プレイヤー描画
 		Player::Instance().Render(rc, modelRenderer);
 		//エネミー描画
 		EnemyManager::Instance().Render(rc, modelRenderer);
+		//オブジェクト描画
+		objectManager::Instance().Render(rc, modelRenderer);
 
 		//エフェクト描画
 		EffectManager::Instance().Render(rc.view, rc.projection);
@@ -124,6 +149,8 @@ void SceneGame::Render()
 
 		//エネミーデバッグプリミティブ描画
 		EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		//オブジェクトデバッグプリミティブ描画
+		objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
 	}
 
 	// 2Dスプライト描画

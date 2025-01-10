@@ -4,6 +4,7 @@
 #include"Player.h"
 #include"CameraController.h"
 #include"Scene.h"
+#include"object.h"
 
 // ÉQÅ[ÉÄÉVÅ[Éì
 class SceneGame:public Scene
@@ -29,4 +30,5 @@ public:
 private:
 	Stage* stage = nullptr;
 	CameraController* cameraController = nullptr;
+	object* object = nullptr;
 };

@@ -6,6 +6,7 @@
 #include "Collision.h"
 #include "ProjectileStraight.h"
 #include "ProjectileHoming.h"
+#include "objectManager.h"
 
 //‰Šú‰»
 void Player::Initialize()
@@ -51,6 +52,8 @@ void Player::Update(float elapsedTime)
 	CollisionPlayerVsEnemies();
 	//’eŠÛ‚Æ“G‚ÌÕ“Ë”»’è
 	CollisitionProjectilesVsEnemies();
+
+	CollisitionProjectilesVsEnemies2();
 }
 
 //•`‰æˆ—
@@ -211,7 +214,10 @@ void Player::CollisionPlayerVsEnemies()
 			}
 		}
 	}
+
 }
+//object
+
 
 //ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
 void Player::RenderDebugPrimitive(const RenderContext& rc, ShapeRenderer* renderer)
@@ -287,6 +293,25 @@ void Player::InputProjectile()
 				target.y += enemy->GetHeight() * 0.5;
 			}
 		}
+		//objectManager& objectManager = objectManager::Instance();
+		//int enemyCount2 = objectManager.GetEnemyCount();
+		//for (int i = 0; i < enemyCount; ++i)
+		//{
+		//	//“G‚Æ‚Ì‹——£”»’è
+		//	object* enemy = objectManager::Instance().GetEnemy(i);
+		//	DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&position);
+		//	DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&enemy->GetPosition());
+		//	DirectX::XMVECTOR V = DirectX::XMVectorSubtract(E, P);
+		//	DirectX::XMVECTOR D = DirectX::XMVector3LengthSq(V);
+		//	float d;
+		//	DirectX::XMStoreFloat(&d, D);
+		//	if (d < dist)
+		//	{
+		//		dist = d;
+		//		target = enemy->GetPosition();
+		//		target.y += enemy->GetHeight() * 0.5;
+		//	}
+		//}
 
 		//”­Ë
 		ProjectileHoming* projectile = new ProjectileHoming(&projectileManager);
@@ -294,8 +319,74 @@ void Player::InputProjectile()
 	}
 }
 
+//object
 //’eŠÛ‚Æ“G‚ÌÕ“Ëˆ—
 void  Player::CollisitionProjectilesVsEnemies()
+{
+	objectManager& objectManager = objectManager::Instance();
+
+	//‚·‚×‚Ä‚Ì’eŠÛ‚Æ‚·‚×‚Ä‚Ì“G‚ğ‘“–‚½‚è‚ÅÕ“Ëˆ—
+	int projectileCount = projectileManager.GetProjectileCoust();
+	int enemyCount = objectManager.GetEnemyCount();
+	for (int i = 0; i < projectileCount; ++i)
+	{
+		Projectile* projectile = projectileManager.GetProjectile(i);
+		for (int j = 0; j < enemyCount; ++j)
+		{
+			object* enemy = objectManager.GetEnemy(j);
+
+			//Õ“Ëˆ—
+			DirectX::XMFLOAT3 outPositon;
+			if (Collision::IntersectSphereVsCylinder(
+				projectile->GetPosition(),
+				projectile->GetRaidus(),
+				enemy->GetPosition(),
+				enemy->GetRadius(),
+				enemy->GetHeight(),
+				outPositon))
+			{
+				//ƒ_ƒ[ƒW‚ğ—^‚¦‚é
+				if (enemy->ApplyDamage(1, 0.5f))
+				{
+					//‚«”ò‚Î‚·
+					{
+						DirectX::XMFLOAT3 impulse;
+						float pow = 10.0f;
+						const DirectX::XMFLOAT3& e = enemy->GetPosition();
+						const DirectX::XMFLOAT3& p = projectile->GetPosition();
+						float vx = e.x - p.x;
+						float vz = e.z - p.z;
+						float lengthXZ = sqrtf(vx * vx + vz * vz);
+						vx /= lengthXZ;
+						vz /= lengthXZ;
+						impulse.x = vx * pow;
+						impulse.y = pow * 0.5f;
+						impulse.z = vz + pow;
+						enemy->AddImpulse(impulse);
+					}
+
+					//ƒqƒbƒgƒGƒtƒFƒNƒgÄ¶
+					{
+						DirectX::XMFLOAT3 e = enemy->GetPosition();
+						e.y += enemy->GetHeight() * 0.5f;
+						hitEffect->Play(e);
+					}
+
+					//ƒqƒbƒgSEÄ¶
+					{
+						hitSE->Play(false);
+					}
+
+					//’eŠÛ”j‰ó
+					projectile->Destroy();
+				}
+			}
+		}
+	}
+
+}
+
+void  Player::CollisitionProjectilesVsEnemies2()
 {
 	EnemyManager& enemyManager = EnemyManager::Instance();
 
