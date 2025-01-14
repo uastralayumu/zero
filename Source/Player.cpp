@@ -66,6 +66,7 @@ void Player::Update(float elapsedTime)
 		move = 0.01f;
 	}
 	else move = 0.03f;
+	position.z -= move;
 }
 
 //•`‰æˆ—
