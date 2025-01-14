@@ -1,5 +1,8 @@
 #include "System/Graphics.h"
 #include "SceneGame.h"
+#include "SceneManager.h"
+#include"SceneLoading.h"
+#include"SceneTitle.h"
 #include"Camera.h"
 #include"EnemyManager.h"
 #include"EnemySlime.h"
@@ -13,6 +16,9 @@ void SceneGame::Initialize()
 	//ステージ初期化
 	stage = new Stage();
 
+	sprite = new Sprite("Data/Sprite/aim.png");
+
+	dangan = new Sprite("Data/Sprite/UI_tama.png");
 
 	//プレイヤー初期化
 	Player::Instance().Initialize();
@@ -144,18 +150,35 @@ void SceneGame::Render()
 
 	// 3Dデバッグ描画
 	{
-		//プレイヤーデバッグプリミティブ描画
-		Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		////プレイヤーデバッグプリミティブ描画
+		//Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
 
-		//エネミーデバッグプリミティブ描画
-		EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-		//オブジェクトデバッグプリミティブ描画
-		objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		////エネミーデバッグプリミティブ描画
+		//EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		////オブジェクトデバッグプリミティブ描画
+		//objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
 	}
 
 	// 2Dスプライト描画
 	{
+		float screenWindth = 220.0f;
+		float screenHeight = 220.0f;
+		float mouseposx = Player::Instance().Mouseposx();
+		float mouseposy = Player::Instance().Mouseposy();
+		float danganCount = Player::Instance().DanganCount();
+		int maxdanganCount = Player::Instance().MaxDanganCount();
 
+		sprite->Render(rc,
+			mouseposx - screenWindth * 0.5f, mouseposy - screenHeight * 0.5f, 0, screenWindth, screenHeight,
+			0,
+			1, 1, 1, 1);
+		for (int i = 0; i < maxdanganCount - danganCount; i++)
+		{
+			dangan->Render(rc,
+				1840, 100 + (i * 50), 0, 60, 60,
+				0,
+				1, 1, 1, 1);
+		}
 	}
 }
 

@@ -25,3 +25,5 @@ private:
 	HighResolutionTimer		timer;
 };
 
+//マウスカーソルの可視状態
+INT ShowCursor(BOOL bShow);

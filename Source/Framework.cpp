@@ -38,6 +38,9 @@ Framework::Framework(HWND hWnd)
 
 	// シーン初期化
 	SceneManager::Instance().ChangeScene(new SceneTitle);
+
+	//マウスカーソルの非表示
+	ShowCursor(FALSE);
 }
 
 // デストラクタ

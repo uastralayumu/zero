@@ -1,4 +1,5 @@
 #include "ProjectileStraight.h"
+#include"System/Input.h"
 
 //コンストラクタ
 ProjectileStraight::ProjectileStraight(ProjectileManager* manager)
@@ -20,8 +21,8 @@ ProjectileStraight::~ProjectileStraight()
 void ProjectileStraight::Update(float elapsedTime)
 {
 	//寿命処理
-	lifeTimer -= 0.01f;
-	if (lifeTimer < 0.0f)
+	GamePad& gamePad = Input::Instance().GetGamePad();
+	if (lifeTimer < 0.0f || gamePad.GetButtonDown() & GamePad::BTN_Y)
 	{
 		//自分を削除
 		Destroy();

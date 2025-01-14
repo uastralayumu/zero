@@ -35,6 +35,14 @@ public:
 	//デバッグプリミティブ描画
 	void RenderDebugPrimitive(const RenderContext& rc, ShapeRenderer* renderer);
 
+	float Mouseposx() const { return mouseposx; }
+
+	float Mouseposy() const { return mouseposy; }
+
+	float DanganCount() const { return danganCount; }
+
+	int MaxDanganCount() const { return maxdanganCount; }
+
 protected:
 	//着地した時に呼ばれる
 	void OnLanding() override;
@@ -65,8 +73,12 @@ private:
 	float moveSpeed = 5.0f;
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 	float jumpSpeed = 12.0f;
+	float danganCount = 0;
+	int maxdanganCount = 10;
 	int jumpCount = 0;
 	int jumpLimit = 2;
+	float mouseposx = 0;
+	float mouseposy = 0;
 	ProjectileManager projectileManager;
 	Effect*  hitEffect = nullptr;
 	AudioSource* hitSE = nullptr;

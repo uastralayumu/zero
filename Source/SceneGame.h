@@ -4,6 +4,7 @@
 #include"Player.h"
 #include"CameraController.h"
 #include"Scene.h"
+#include "System/Sprite.h"
 #include"object.h"
 
 // ÉQÅ[ÉÄÉVÅ[Éì
@@ -29,6 +30,8 @@ public:
 	void DrawGUI();
 private:
 	Stage* stage = nullptr;
+	Sprite* sprite = nullptr;
+	Sprite* dangan = nullptr;
 	CameraController* cameraController = nullptr;
 	object* object = nullptr;
 };

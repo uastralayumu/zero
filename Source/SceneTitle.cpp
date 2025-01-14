@@ -9,7 +9,7 @@
 void SceneTitle::Initialize()
 {
 	//スプライト初期化
-	sprite = new Sprite("Data/Sprite/Title.png");
+	sprite = new Sprite("Data/Sprite/game001.png");
 }
 
 //終了化
@@ -29,12 +29,7 @@ void SceneTitle::Update(float elapsedTime)
 	GamePad& gamePad = Input::Instance().GetGamePad();
 
 	//何かボタンを押したらゲームシーンへの切り替え
-	const GamePadButton anyButton =
-		GamePad::BTN_A
-		| GamePad::BTN_B
-		| GamePad::BTN_X
-		| GamePad::BTN_Y
-		;
+	const GamePadButton anyButton = GamePad::BTN_Y;
 	if (gamePad.GetButtonDown() & anyButton)
 	{
 		SceneManager::Instance().ChangeScene(new SceneLoading(new SceneGame));
