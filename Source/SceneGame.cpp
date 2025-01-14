@@ -148,7 +148,7 @@ void SceneGame::Render()
 		EffectManager::Instance().Render(rc.view, rc.projection);
 	}
 
-	// 3Dデバッグ描画
+	// 3Dデバッグ描画l
 	{
 		////プレイヤーデバッグプリミティブ描画
 		//Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
