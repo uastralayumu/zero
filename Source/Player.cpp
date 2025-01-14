@@ -40,6 +40,8 @@ void Player::Finalize()
 //更新処理
 void Player::Update(float elapsedTime)
 {
+	GamePad& gamePad = Input::Instance().GetGamePad();
+
 	//移動入力処理
 	InputMove(elapsedTime);
 	//オブジェクト行列を更新
@@ -47,7 +49,7 @@ void Player::Update(float elapsedTime)
 	//モデル行列更新
 	model->UpdateTransform();
 	//ジャンプ入力処理
-	InputJump();
+	/*InputJump();*/
 	//弾丸入力処理
 	InputProjectile();
 	//速力処理更新
@@ -58,6 +60,12 @@ void Player::Update(float elapsedTime)
 	CollisionPlayerVsEnemies();
 	//弾丸と敵の衝突判定
 	CollisitionProjectilesVsEnemies();
+
+	if (gamePad.GetButton() & GamePad::BTN_X)
+	{
+		move = 0.01f;
+	}
+	else move = 0.03f;
 }
 
 //描画処理
@@ -147,7 +155,6 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
 	vec.z = (cameraRightZ * ay) + (cameraFrontZ * ay);
 	//Y軸方向に移動しない
 	vec.y = 0.0f;
-
 	return vec;
 }
 
