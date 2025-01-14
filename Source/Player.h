@@ -58,7 +58,7 @@ private:
 	//’eŠÛ‚Æ“G‚ÌÕ“Ëˆ—
 	void CollisitionProjectilesVsEnemies();
 
-	
+	void CollisitionProjectilesVsEnemies2();
 
 private:
 	Model* model = nullptr;

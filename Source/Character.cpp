@@ -59,7 +59,7 @@ bool Character::ApplyDamage(int damage,float invincibleTime)
 	{
 		OnDamaged();
 	}
-
+	
 	//Œ’Nó‘Ô‚ª•ÏX‚µ‚½ê‡‚Ítrue‚ğ•Ô‚·
 	return true;
 }

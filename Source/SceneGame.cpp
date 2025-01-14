@@ -47,7 +47,7 @@ void SceneGame::Initialize()
 	for (int i = 0; i < 2; ++i)
 	{
 		objectEnemy* object = new objectEnemy();
-		object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
+		object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 10));
 		object->SetTerritory(object->GetPosition(), 10.0f);
 		enemyManager.Register(object);
 	}
@@ -130,7 +130,7 @@ void SceneGame::Render()
 		//ステージ描画
 		stage->Render(rc, modelRenderer);
 		////オブジェクト
-		//object->Render(rc, modelRenderer);
+		
 		//プレイヤー描画
 		Player::Instance().Render(rc, modelRenderer);
 		//エネミー描画
