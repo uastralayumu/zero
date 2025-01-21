@@ -4,16 +4,18 @@
 #include"SceneGame.h"
 #include"SceneManager.h"
 #include"SceneLoading.h"
+#include "SceneTutorial.h"
 #include"SceneTutorial.h"
+
 //初期化
-void SceneTitle::Initialize()
+void SceneTutorial::Initialize()
 {
 	//スプライト初期化
-	sprite = new Sprite("Data/Sprite/game001.png");
+	sprite = new Sprite("Data/Sprite/tutorial_1.png");
 }
 
 //終了化
-void SceneTitle::Finalize()
+void SceneTutorial::Finalize()
 {
 	//スプライト終了化
 	if (sprite != nullptr)
@@ -24,7 +26,7 @@ void SceneTitle::Finalize()
 }
 
 //更新処理
-void SceneTitle::Update(float elapsedTime)
+void SceneTutorial::Update(float elapsedTime)
 {
 	GamePad& gamePad = Input::Instance().GetGamePad();
 
@@ -32,12 +34,26 @@ void SceneTitle::Update(float elapsedTime)
 	const GamePadButton anyButton = GamePad::BTN_X;
 	if (gamePad.GetButtonDown() & anyButton)
 	{
-		SceneManager::Instance().ChangeScene(new SceneLoading(new SceneTutorial));
+		tutorial++;
+	}
+
+	switch (tutorial)
+	{
+	case 1:	sprite = new Sprite("Data/Sprite/tutorial_2.png");
+		break;
+	case 2:	sprite = new Sprite("Data/Sprite/tutorial_3.png");
+		break;
+	case 3:	sprite = new Sprite("Data/Sprite/tutorial_4.png");
+		break;
+	case 4:	sprite = new Sprite("Data/Sprite/tutorial_5.png");
+		break;
+	case 5:	SceneManager::Instance().ChangeScene(new SceneLoading(new SceneGame));
+		break;
 	}
 }
 
 //描画処理
-void SceneTitle::Render()
+void SceneTutorial::Render()
 {
 	Graphics& graphics = Graphics::Instance();
 	ID3D11DeviceContext* dc = graphics.GetDeviceContext();
@@ -61,7 +77,7 @@ void SceneTitle::Render()
 }
 
 //GUI描画
-void SceneTitle::DrawGUI()
+void SceneTutorial::DrawGUI()
 {
 
 }

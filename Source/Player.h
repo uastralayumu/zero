@@ -85,4 +85,6 @@ private:
 	ProjectileManager projectileManager;
 	Effect*  hitEffect = nullptr;
 	AudioSource* hitSE = nullptr;
+
+	int score = 0;
 };
