@@ -18,4 +18,7 @@ public:
 
 	//•`‰æˆ—
 	virtual void Render(const RenderContext& rc, ModelRenderer* rendrer) = 0;
+
+	//ƒXƒRƒA
+	virtual int GetScore() = 0;
 };

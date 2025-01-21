@@ -23,6 +23,8 @@ public:
 	//縄張り設定
 	void SetTerritory(const DirectX::XMFLOAT3& origin, float range);
 
+	int GetScore() { return score; }
+
 private:
 
 	//ターゲット位置をランダム設定
@@ -76,6 +78,7 @@ private:
 	float turnSpeed = DirectX::XMConvertToRadians(360);
 	float stateTimer = 0.0f;
 	float searchRange = 5.0f;
+	int score = 50;
 	ProjectileManager projectileManager;
 
 };

@@ -442,6 +442,7 @@ void  Player::CollisitionProjectilesVsEnemies()
 				//ƒ_ƒ[ƒW‚ð—^‚¦‚é
 				if (enemy->ApplyDamage(1, 0.5f))
 				{
+					
 					//‚«”ò‚Î‚·
 					{
 						/*DirectX::XMFLOAT3 impulse;
@@ -470,6 +471,8 @@ void  Player::CollisitionProjectilesVsEnemies()
 					{
 						hitSE->Play(false);
 					}
+
+					score += enemy->GetScore();
 
 					//’eŠÛ”j‰ó
 					projectile->Destroy();
