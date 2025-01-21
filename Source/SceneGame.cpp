@@ -15,6 +15,7 @@
 #include"SceneResult.h"
 #include"System/Audio.h"
 
+
 // 初期化
 void SceneGame::Initialize()
 {
@@ -66,6 +67,16 @@ void SceneGame::Initialize()
 		objectEnemy* object = new objectEnemy();
 
     object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 5, 10));
+
+		object->SetTerritory(object->GetPosition(), 10.0f);
+		enemyManager.Register(object);
+	}
+	
+	for (int i = 0; i < 2; ++i)
+	{
+		objectEnemy* object = new objectEnemy();
+
+		object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 5, 10));
 
 		object->SetTerritory(object->GetPosition(), 10.0f);
 		enemyManager.Register(object);
