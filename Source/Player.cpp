@@ -40,6 +40,8 @@ void Player::Finalize()
 //更新処理
 void Player::Update(float elapsedTime)
 {
+	GamePad& gamePad = Input::Instance().GetGamePad();
+
 	//移動入力処理
 	InputMove(elapsedTime);
 	//オブジェクト行列を更新
@@ -47,7 +49,7 @@ void Player::Update(float elapsedTime)
 	//モデル行列更新
 	model->UpdateTransform();
 	//ジャンプ入力処理
-	InputJump();
+	/*InputJump();*/
 	//弾丸入力処理
 	InputProjectile();
 	//速力処理更新
@@ -58,6 +60,20 @@ void Player::Update(float elapsedTime)
 	CollisionPlayerVsEnemies();
 	//弾丸と敵の衝突判定
 	CollisitionProjectilesVsEnemies();
+
+	if (gamePad.GetButton() & GamePad::BTN_X)
+	{
+		move = 0.01f;
+	}
+	else move = 0.03f;
+
+	if (position.z <= -363)
+	{
+		move = 0;
+		position.z = -363;
+	}
+
+	position.z -= move;
 }
 
 //描画処理
@@ -147,7 +163,6 @@ DirectX::XMFLOAT3 Player::GetMoveVec() const
 	vec.z = (cameraRightZ * ay) + (cameraFrontZ * ay);
 	//Y軸方向に移動しない
 	vec.y = 0.0f;
-
 	return vec;
 }
 
@@ -196,7 +211,7 @@ void Player::CollisionPlayerVsEnemies()
 		if (Collision::IntersectCylinderVsCylinder(
 			position,radius,height,
 			enemy->GetPosition(),
-			enemy->GetRadius(),
+			enemy->GetRadius() ,
 			enemy->GetHeight(),
 			outPosition))
 		{
@@ -414,7 +429,6 @@ void  Player::CollisitionProjectilesVsEnemies()
 		for (int j = 0; j < enemyCount; ++j)
 		{
 			Enemy* enemy = enemyManager.GetEnemy(j);
-
 			//衝突処理
 			DirectX::XMFLOAT3 outPositon;
 			if (Collision::IntersectSphereVsCylinder(
@@ -430,7 +444,7 @@ void  Player::CollisitionProjectilesVsEnemies()
 				{
 					//吹き飛ばす
 					{
-						DirectX::XMFLOAT3 impulse;
+						/*DirectX::XMFLOAT3 impulse;
 						float pow = 10.0f;
 						const DirectX::XMFLOAT3& e = enemy->GetPosition();
 						const DirectX::XMFLOAT3& p = projectile->GetPosition();
@@ -442,7 +456,7 @@ void  Player::CollisitionProjectilesVsEnemies()
 						impulse.x = vx * pow;
 						impulse.y = pow * 0.5f;
 						impulse.z = vz + pow;
-						enemy->AddImpulse(impulse);
+						enemy->AddImpulse(impulse);*/
 					}
 
 					//ヒットエフェクト再生

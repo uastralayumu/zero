@@ -69,9 +69,7 @@ void Character::Move(float elapsedTime, float vx, float vz, float speed)
 {
 
 	//移動方向ベクトルを設定
-	/*moveVecX = vx;
-	moveVecZ = vz;*/
-	position.z -= move;
+
 
 	//最大速度設定
 	maxMoveSpeed = speed;
@@ -128,13 +126,13 @@ void Character::Jump(float speed)
 void Character::UpdateVelocity(float elapsedTime)
 {
 	//垂直速力更新処理
-	UpdateVerticalVelocity(elapsedTime);
+	//UpdateVerticalVelocity(elapsedTime);
 
 	//水平速力更新処理
 	UpdateHorizontalVelocity(elapsedTime);
 
 	//垂直移動更新処理
-	UpdateVerticalMove(elapsedTime);
+	/*UpdateVerticalMove(elapsedTime);*/
 
 	//水平移動更新処理
 	UpdateHorizontalMove(elapsedTime);

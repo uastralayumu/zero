@@ -190,6 +190,9 @@
       <Filter>Source</Filter>
     </ClInclude>
     <ClInclude Include="Source\matoEnemy.h">
+    <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\SceneResult.h">
       <Filter>Source</Filter>
     </ClInclude>
   </ItemGroup>
@@ -342,6 +345,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\matoEnemy.cpp">
+     <Filter>Source</Filter>
+      </ClCompile>
+    <ClCompile Include="Source\SceneResult.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

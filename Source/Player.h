@@ -43,6 +43,9 @@ public:
 
 	int MaxDanganCount() const { return maxdanganCount; }
 
+	int PlayerPositionZ() const { return position.z; }
+
+	float PlayerMover() const { return move; }
 protected:
 	//’…’n‚µ‚½Žž‚ÉŒÄ‚Î‚ê‚é
 	void OnLanding() override;

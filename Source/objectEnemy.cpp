@@ -3,103 +3,105 @@
 #include "Player.h"
 #include "ProjectileStraight.h"
 
-//ƒRƒ“ƒXƒgƒ‰ƒNƒ^
+//ã‚³ãƒ³ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 objectEnemy::objectEnemy()
 {
-	model = new Model("Data/Model/object/debris1.mdl");
+	model = new Model("Data/Model/object/debris.mdl");
 
-	//ƒ‚ƒfƒ‹‚ª‘å‚«‚¢‚Ì‚ÅƒXƒP[ƒŠƒ“ƒO
+	//ãƒ¢ãƒ‡ãƒ«ãŒå¤§ãã„ã®ã§ã‚¹ã‚±ãƒ¼ãƒªãƒ³ã‚°
 	scale.x = scale.y = scale.z = 0.50f;
 
-	//•A‚‚³İ’è
-	radius = 1.9f;
-	height = 2.5f;
+	//å¹…ã€é«˜ã•è¨­å®š
+	radius = 2.0f;
+	height = 4.0f;
 
-	//œpœjƒXƒe[ƒg‚Ö‘JˆÚ
+	//å¾˜å¾Šã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
 	SetWanderState();
 }
 
-//ƒfƒXƒgƒ‰ƒNƒ^
+//ãƒ‡ã‚¹ãƒˆãƒ©ã‚¯ã‚¿
 objectEnemy::~objectEnemy()
 {
 	delete model;
 }
 
-//XVˆ—
+//æ›´æ–°å‡¦ç†
 void objectEnemy::Update(float elapsedTime)
 {
-	//ƒXƒe[ƒg–ˆ‚ÌXVˆ—
-	switch (state)
-	{
-	case State::Wander:
-		UpdateWanderState(elapsedTime);
-		break;
-	case State::Idle:
-		UpdateIdleState(elapsedTime);
-		break;
-	case State::Attack:
-		UpdateAttackState(elapsedTime);
-		break;
-	}
-	//‘¬—Íˆ—XV
+	////ã‚¹ãƒ†ãƒ¼ãƒˆæ¯ã®æ›´æ–°å‡¦ç†
+	//switch (state)
+	//{
+	//case State::Wander:
+	//	UpdateWanderState(elapsedTime);
+	//	break;
+	//case State::Idle:
+	//	UpdateIdleState(elapsedTime);
+	//	break;
+	//case State::Attack:
+	//	UpdateAttackState(elapsedTime);
+	//	break;
+	//}
+	//é€ŸåŠ›å‡¦ç†æ›´æ–°
 	UpdateVelocity(elapsedTime);
 
-	//’eŠÛXVˆ—
-	projectileManager.Update(elapsedTime);
+	////å¼¾ä¸¸æ›´æ–°å‡¦ç†
+	//projectileManager.Update(elapsedTime);
 
-	//–³“GŠÔXV
+	//ç„¡æ•µæ™‚é–“æ›´æ–°
 	UpdateInvincibleTimer(elapsedTime);
 
-	//ƒIƒuƒWƒFƒNƒgs—ñ‚ğXV
+	//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆè¡Œåˆ—ã‚’æ›´æ–°
 	//UpdateTransform();
-	//ƒXƒP[ƒ‹s—ñ‚ğì¬
+
+	//ã‚¹ã‚±ãƒ¼ãƒ«è¡Œåˆ—ã‚’ä½œæˆ
 	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
-	//‰ñ“]s—ñ‚ğì¬
+	//å›è»¢è¡Œåˆ—ã‚’ä½œæˆ
 	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
-	//ˆÊ’us—ñ‚ğì¬
+	//ä½ç½®è¡Œåˆ—ã‚’ä½œæˆ
 	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y+1.6, position.z);
-	//3‚Â‚Ìs—ñ‚ğ‘g‚İ‡‚í‚¹Aƒ[ƒ‹ƒhs—ñ‚ğì¬
+
+	//3ã¤ã®è¡Œåˆ—ã‚’çµ„ã¿åˆã‚ã›ã€ãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’ä½œæˆ
 	DirectX::XMMATRIX W = S * R * T;
-	//ŒvZ‚µ‚½ƒ[ƒ‹ƒhs—ñ‚ğæ‚èo‚·
+	//è¨ˆç®—ã—ãŸãƒ¯ãƒ¼ãƒ«ãƒ‰è¡Œåˆ—ã‚’å–ã‚Šå‡ºã™
 	DirectX::XMStoreFloat4x4(&transform, W);
 
-	//ƒ‚ƒfƒ‹s—ñXV
+	//ãƒ¢ãƒ‡ãƒ«è¡Œåˆ—æ›´æ–°
 	model->UpdateTransform();
 }
 
-//•`‰æˆ—
+//æç”»å‡¦ç†
 void objectEnemy::Render(const RenderContext& rc, ModelRenderer* renderer)
 {
 	renderer->Render(rc, transform, model, ShaderId::Lambert);
 
-	//’eŠÛ•`‰æˆ—
+	//å¼¾ä¸¸æç”»å‡¦ç†
 	projectileManager.Render(rc, renderer);
 }
 
-//ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
+//ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
 void objectEnemy::RenderDebugPrimitive(const RenderContext& rc, ShapeRenderer* renderer)
 {
-	//Šî’êƒNƒ‰ƒX‚ÌƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
+	//åŸºåº•ã‚¯ãƒ©ã‚¹ã®ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
 	Enemy::RenderDebugPrimitive(rc, renderer);
 
-	//“ê’£‚è”ÍˆÍ‚ğƒfƒoƒbƒO‰~’Œ•`‰æ
+	//ç¸„å¼µã‚Šç¯„å›²ã‚’ãƒ‡ãƒãƒƒã‚°å††æŸ±æç”»
 	renderer->RenderCylinder(rc, territoryOrigin, territoryRange, 1.0f, DirectX::XMFLOAT4(0, -1, 0, 1));
 
-	//ƒ^[ƒQƒbƒgˆÊ’u‚ğƒfƒoƒbƒO‹…•`‰æ
+	//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®ã‚’ãƒ‡ãƒãƒƒã‚°çƒæç”»
 	renderer->RenderSphere(rc, targetPosition, 1.0f, DirectX::XMFLOAT4(1, 1, 0, 1));
 
-	//õ“G”ÍˆÍ‚ğƒfƒoƒbƒO‰~’Œ•`‰æ
+	//ç´¢æ•µç¯„å›²ã‚’ãƒ‡ãƒãƒƒã‚°å††æŸ±æç”»
 	renderer->RenderCylinder(rc, position, searchRange, 1.0f, DirectX::XMFLOAT4(1, 0, 0, 1));
 }
 
-//“ê’£‚èİ’è
+//ç¸„å¼µã‚Šè¨­å®š
 void objectEnemy::SetTerritory(const DirectX::XMFLOAT3& origin, float range)
 {
 	territoryOrigin = origin;
 	territoryRange = range;
 }
 
-//ƒ^[ƒQƒbƒgˆÊ’u‚ğƒ‰ƒ“ƒ_ƒ€İ’è
+//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆä½ç½®ã‚’ãƒ©ãƒ³ãƒ€ãƒ è¨­å®š
 void objectEnemy::SetRandomTargetPosition()
 {
 	float theta = MathUtils::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
@@ -109,67 +111,67 @@ void objectEnemy::SetRandomTargetPosition()
 	targetPosition.z = territoryOrigin.z + cosf(theta) * range;
 }
 
-//–Ú•W’n“_‚ÖˆÚ“®
+//ç›®æ¨™åœ°ç‚¹ã¸ç§»å‹•
 void objectEnemy::MoveToTarget(float elapsedTime, float moveSpeedRate, float turnSpeedRate)
 {
-	//ƒ^[ƒQƒbƒg•ûŒü‚Ö‚ÌisƒxƒNƒgƒ‹‚ğZo
+	//ã‚¿ãƒ¼ã‚²ãƒƒãƒˆæ–¹å‘ã¸ã®é€²è¡Œãƒ™ã‚¯ãƒˆãƒ«ã‚’ç®—å‡º
 	float vx = targetPosition.x - position.x;
 	float vz = targetPosition.z - position.z;
 	float dist = sqrtf(vx * vx + vz * vz);
 	vx /= dist;
 	vz /= dist;
 
-	//ˆÚ“®ˆ—
-	Move(elapsedTime, vx, vz, moveSpeed * moveSpeedRate);
-	Turn(elapsedTime, vx, vz, turnSpeed * turnSpeedRate);
+	//ç§»å‹•å‡¦ç†
+	//Move(elapsedTime, vx, vz, moveSpeed * moveSpeedRate);
+	/*Turn(elapsedTime, vx, vz, turnSpeed * turnSpeedRate);*/
 }
 
-//œpœjƒXƒe[ƒg‚Ö‘JˆÚ
+//å¾˜å¾Šã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
 void objectEnemy::SetWanderState()
 {
 	state = State::Wander;
 
 
-	//–Ú•W’n“_İ’è
+	//ç›®æ¨™åœ°ç‚¹è¨­å®š
 	SetRandomTargetPosition();
 
 }
 
-//œpœjƒXƒe[ƒgXVˆ—
+//å¾˜å¾Šã‚¹ãƒ†ãƒ¼ãƒˆæ›´æ–°å‡¦ç†
 void objectEnemy::UpdateWanderState(float elapsedTime)
 {
-	//–Ú•W’n“_‚Ü‚ÅXZ•½–Ê‚Å‚Ì‹——£”»’è
+	//ç›®æ¨™åœ°ç‚¹ã¾ã§XZå¹³é¢ã§ã®è·é›¢åˆ¤å®š
 	float vx = targetPosition.x - position.x;
 	float vz = targetPosition.z - position.z;
 	float distSq = vx * vx + vz * vz;
 	if (distSq < radius * radius)
 	{
-		//‘Ò‹@ƒXƒe[ƒg‚Ö‘JˆÚ
+		//å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
 		SetIdleState();
 	}
 
-	//–Ú•W’n“_‚ÖˆÚ“®
+	//ç›®æ¨™åœ°ç‚¹ã¸ç§»å‹•
 	MoveToTarget(elapsedTime, 1.0f, 1.0f);
 
-	//ƒvƒŒƒCƒ„[õ“G
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç´¢æ•µ
 	if (SearchPlayer())
 	{
-		//Œ©‚Â‚©‚Á‚½‚çUŒ‚ƒXƒe[ƒg‚Ö‘JˆÚ
+		//è¦‹ã¤ã‹ã£ãŸã‚‰æ”»æ’ƒã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
 		SetAttackState();
 	}
 }
 
-//€–S‚µ‚½‚ÉŒÄ‚Î‚ê‚é
+//æ­»äº¡ã—ãŸæ™‚ã«å‘¼ã°ã‚Œã‚‹
 void objectEnemy::OnDead()
 {
-	//©M‚ğ”jŠü
+	//è‡ªä¿¡ã‚’ç ´æ£„
 	Destroy();
 }
 
-//ƒvƒŒƒCƒ„[õ“G
+//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç´¢æ•µ
 bool objectEnemy::SearchPlayer()
 {
-	//ƒvƒŒƒCƒ„[‚Æ‚Ì‚’á·‚ğl—¶‚µ‚Ä3D‚Å‚Ì‹——£”»’è‚ğ‚·‚é
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã¨ã®é«˜ä½å·®ã‚’è€ƒæ…®ã—ã¦3Dã§ã®è·é›¢åˆ¤å®šã‚’ã™ã‚‹
 	const DirectX::XMFLOAT3& playerPosition = Player::Instance().GetPosition();
 	float vx = playerPosition.x - position.x;
 	float vy = playerPosition.y - position.y;
@@ -178,13 +180,13 @@ bool objectEnemy::SearchPlayer()
 	if (dist < searchRange)
 	{
 		float distXZ = sqrtf(vx * vx + vz * vz);
-		//’PˆÊƒxƒNƒgƒ‹‰»
+		//å˜ä½ãƒ™ã‚¯ãƒˆãƒ«åŒ–
 		vx /= distXZ;
 		vz /= distXZ;
-		//‘O•ûƒxƒNƒgƒ‹
+		//å‰æ–¹ãƒ™ã‚¯ãƒˆãƒ«
 		float frontX = sinf(angle.y);
 		float frontZ = cosf(angle.y);
-		//2‚Â‚ÌƒxƒNƒgƒ‹‚Ì“àÏ’l‚Å‘OŒã”»’è
+		//2ã¤ã®ãƒ™ã‚¯ãƒˆãƒ«ã®å†…ç©å€¤ã§å‰å¾Œåˆ¤å®š
 		float dot = (frontX * vx) + (frontZ * vz);
 		if (dot > 0.0f)
 		{
@@ -195,37 +197,37 @@ bool objectEnemy::SearchPlayer()
 }
 
 
-//‘Ò‹@ƒXƒe[ƒg‚Ö‘JˆÚ
+//å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
 void objectEnemy::SetIdleState()
 {
 	state = State::Idle;
 
-	//ƒ^ƒCƒ}[‚ğƒ‰ƒ“ƒ_ƒ€İ’è
+	//ã‚¿ã‚¤ãƒãƒ¼ã‚’ãƒ©ãƒ³ãƒ€ãƒ è¨­å®š
 	stateTimer = MathUtils::RandomRange(3.0f, 5.0f);
 
 }
 
-//‘Ò‹@ƒXƒe[ƒgXVˆ—
+//å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆæ›´æ–°å‡¦ç†
 void objectEnemy::UpdateIdleState(float elapsedTime)
 {
-	//ƒ^ƒCƒ}[ˆ—
+	//ã‚¿ã‚¤ãƒãƒ¼å‡¦ç†
 	stateTimer -= elapsedTime;
 
 	if (stateTimer < 0.0f)
 	{
-		//œpœjƒXƒe[ƒg‚Ö‘JˆÚ
+		//å¾˜å¾Šã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
 		SetWanderState();
 	}
 
-	//ƒvƒŒƒCƒ„[õ“G
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ç´¢æ•µ
 	if (SearchPlayer())
 	{
-		//Œ©‚Â‚©‚Á‚½‚çUŒ‚ƒXƒe[ƒg‘JˆÚ
+		//è¦‹ã¤ã‹ã£ãŸã‚‰æ”»æ’ƒã‚¹ãƒ†ãƒ¼ãƒˆé·ç§»
 		SetAttackState();
 	}
 }
 
-//UŒ‚ƒXƒe[ƒg‘JˆÚ
+//æ”»æ’ƒã‚¹ãƒ†ãƒ¼ãƒˆé·ç§»
 void objectEnemy::SetAttackState()
 {
 	state = State::Attack;
@@ -233,40 +235,40 @@ void objectEnemy::SetAttackState()
 	stateTimer = 0.0f;
 }
 
-//’ÇÕƒXƒe[ƒgXVˆ—
+//è¿½è·¡ã‚¹ãƒ†ãƒ¼ãƒˆæ›´æ–°å‡¦ç†
 void objectEnemy::UpdateAttackState(float elapsedTime)
 {
-	//–Ú•W’n“_‚ğƒvƒŒƒCƒ„[ˆÊ’u‚Éİ’è
+	//ç›®æ¨™åœ°ç‚¹ã‚’ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ä½ç½®ã«è¨­å®š
 	targetPosition = Player::Instance().GetPosition();
 
-	//–Ú•W’n“_‚ÖˆÚ“®
+	//ç›®æ¨™åœ°ç‚¹ã¸ç§»å‹•
 	MoveToTarget(elapsedTime, 0.0f, 1.0f);
 
-	//ƒ^ƒCƒ}[ˆ—
+	//ã‚¿ã‚¤ãƒãƒ¼å‡¦ç†
 	stateTimer -= elapsedTime;
 	if (stateTimer < 0.0f)
 	{
-		//‘O•ûŒü
+		//å‰æ–¹å‘
 		DirectX::XMFLOAT3 dir;
 		dir.x = sinf(angle.y);
 		dir.y = 0.0f;
 		dir.z = cosf(angle.y);
-		//”­ËˆÊ’u(ƒvƒŒƒCƒ„[‚Ì˜“–‚½‚è)
+		//ç™ºå°„ä½ç½®(ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã®è…°å½“ãŸã‚Š)
 		DirectX::XMFLOAT3 pos;
 		pos.x = position.x;
 		pos.y = position.y + height * 0.5f;
 		pos.z = position.z;
-		//”­Ë
+		//ç™ºå°„
 		ProjectileStraight* projectile = new ProjectileStraight(&projectileManager);
 		projectile->Launch(dir, pos);
 
 		stateTimer = 2.0f;
 	}
 
-	//ƒvƒŒƒCƒ„[‚ğŒ©¸‚Á‚½‚ç
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ã‚’è¦‹å¤±ã£ãŸã‚‰
 	if (!SearchPlayer())
 	{
-		//‘Ò‹@ƒXƒe[ƒg‚Ö‘JˆÚ
+		//å¾…æ©Ÿã‚¹ãƒ†ãƒ¼ãƒˆã¸é·ç§»
 		SetIdleState();
 	}
 }
