@@ -64,40 +64,39 @@ void SceneGame::Initialize()
 	/*objectManager& objectManager = objectManager::Instance();*/
 
 
-	DirectX::XMFLOAT3 p[16] = {
-		{ 0, 5, 10 },
-		{ 0, 2, 15 },
-		{ 0, 1, 50 },
-		{ 0, 0, 30 },
-		{ 0, 3, 25 },
-		{ 0, 1, 10 },
-		{ 0, 2, 10 },
-		{ 0, 5, 10 },
-	};
-	for (int i = 0; i < 16; ++i)
-	{
-		objectEnemy* object = new objectEnemy();
+	//DirectX::XMFLOAT3 p[16] = {
+	//	{ 0, 5, 10 },
+	//	{ 0, 2, 15 },
+	//	{ 0, 1, 50 },
+	//	{ 0, 0, 30 },
+	//	{ 0, 3, 25 },
+	//	{ 0, 1, 10 },
+	//	{ 0, 2, 10 },
+	//	{ 0, 5, 10 },
+	//};
+	//for (int i = 0; i < 16; ++i)
+	//{
+	//	objectEnemy* object = new objectEnemy();
 
-    //object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 5, 10));
-    object->SetPosition(p[i]);
+ //   //object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 5, 10));
+ //   object->SetPosition(p[i]);
 
-		object->SetTerritory(object->GetPosition(), 10.0f);
-		enemyManager.Register(object);
-	}
+	//	object->SetTerritory(object->GetPosition(), 10.0f);
+	//	enemyManager.Register(object);
+	//}
 	
-	for (int i = 0; i < 2; ++i)
-	{
-		objectEnemy* object = new objectEnemy();
-
-		object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 5, 10));
-
-		object->SetTerritory(object->GetPosition(), 10.0f);
-		enemyManager.Register(object);
-	}
-	for (int i = 0; i < 2; ++i)
+	DirectX::XMFLOAT3 m[6] = {
+		{ 1, 2, -5 },
+		{ 2, 1, -15 },
+		{ 1, 3, -40 },
+		{ 5, 3.5, -30 },
+		{ 6, 1.5, -20 },
+		{ 3, 1, -30 },
+	};
+	for (int i = 0; i < 6; ++i)
 	{
 		matoEnemy* mato = new matoEnemy();
-		mato->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 15));
+		mato->SetPosition(m[i]);
 		mato->SetTerritory(mato->GetPosition(), 10.0f);
 		enemyManager.Register(mato);
 	}
