@@ -183,6 +183,15 @@
     <ClInclude Include="Source\objectEnemy.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\matoManager.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\mato.h">
+      <Filter>Source</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\matoEnemy.h">
+    <Filter>Source</Filter>
+    </ClInclude>
     <ClInclude Include="Source\SceneResult.h">
       <Filter>Source</Filter>
     </ClInclude>
@@ -332,6 +341,12 @@
     <ClCompile Include="Source\objectEnemy.cpp">
       <Filter>Source</Filter>
     </ClCompile>
+    <ClCompile Include="Source\matoManager.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\matoEnemy.cpp">
+     <Filter>Source</Filter>
+      </ClCompile>
     <ClCompile Include="Source\SceneResult.cpp">
       <Filter>Source</Filter>
     </ClCompile>

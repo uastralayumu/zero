@@ -28,7 +28,7 @@ void Character::AddImpulse(const DirectX::XMFLOAT3& impulse)
 void Character::RenderDebugPrimitive(const RenderContext& rc, ShapeRenderer* renderer)
 {
 	//衝突判定用のデバッグ円柱を描画
-	renderer->RenderCylinder(rc, position, radius, height, DirectX::XMFLOAT4(0, 0, 0, 1));
+	renderer->RenderCylinder(rc, position, radius, height, DirectX::XMFLOAT4(0, 1, 0, 1));
 }
 
 //ダメージを与える

@@ -10,13 +10,15 @@
 #include"EffectManager.h"
 #include"objectManager.h"
 #include"objectEnemy.h"
+#include"matoManager.h"
+#include"matoEnemy.h"
 #include"SceneResult.h"
 #include"System/Audio.h"
 
-// ‰Šú‰»
+// åˆæœŸåŒ–
 void SceneGame::Initialize()
 {
-	//ƒXƒe[ƒW‰Šú‰»
+	//ã‚¹ãƒ†ãƒ¼ã‚¸åˆæœŸåŒ–
 	stage = new Stage();
 
 	sprite = new Sprite("Data/Sprite/aim.png");
@@ -29,10 +31,10 @@ void SceneGame::Initialize()
 
 	BGMmain = Audio::Instance().LoadAudioSource("Data/Sound/BGM_main - .wav");
 
-	//ƒvƒŒƒCƒ„[‰Šú‰»
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼åˆæœŸåŒ–
 	Player::Instance().Initialize();
 
-	//ƒJƒƒ‰‰Šúİ’è
+	//ã‚«ãƒ¡ãƒ©åˆæœŸè¨­å®š
 	Graphics& graphics = Graphics::Instance();
 	Camera& camera = Camera::Instance();
 	camera.SetLookAt(
@@ -46,10 +48,10 @@ void SceneGame::Initialize()
 		0.1f,
 		1000.0f
 	);
-	//ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[‰Šúİ’è
+	//ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼åˆæœŸè¨­å®š
 	cameraController = new CameraController();
 
-	//ƒGƒlƒ~[‰Šú‰»
+	//ã‚¨ãƒãƒŸãƒ¼åˆæœŸåŒ–
 	EnemyManager& enemyManager = EnemyManager::Instance();
 	/*for (int i = 0; i < 2; ++i)
 	{
@@ -62,32 +64,44 @@ void SceneGame::Initialize()
 	for (int i = 0; i < 2; ++i)
 	{
 		objectEnemy* object = new objectEnemy();
-		object->SetPosition(DirectX::XMFLOAT3(i * 5.0f, 0, 10));
+
+    object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 5, 10));
+
 		object->SetTerritory(object->GetPosition(), 10.0f);
 		enemyManager.Register(object);
 	}
+	for (int i = 0; i < 2; ++i)
+	{
+		matoEnemy* mato = new matoEnemy();
+		mato->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 15));
+		mato->SetTerritory(mato->GetPosition(), 10.0f);
+		enemyManager.Register(mato);
+	}
 }
 
-// I—¹‰»
+// çµ‚äº†åŒ–
 void SceneGame::Finalize()
 {
-	//ƒGƒlƒ~[I—¹‰»
+	//ã‚¨ãƒãƒŸãƒ¼çµ‚äº†åŒ–
 	EnemyManager::Instance().Clear();
-	//ƒGƒlƒ~[I—¹‰»
-	/*objectManager::Instance().Clear();*/
-	//ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[I—¹‰»
+	//ã‚¨ãƒãƒŸãƒ¼çµ‚äº†åŒ–
+	objectManager::Instance().Clear();
+	//çš„çµ‚äº†åŒ–
+	matoManager::Instance().Clear();
+
+	//ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼çµ‚äº†åŒ–
 	if (cameraController != nullptr)
 	{
 		delete cameraController;
 		cameraController = nullptr;
 	}
-	//ƒXƒe[ƒWI—¹‰»
+	//ã‚¹ãƒ†ãƒ¼ã‚¸çµ‚äº†åŒ–
 	if (stage != nullptr)
 	{
 		delete stage;
 		stage = nullptr;
 	}
-	////ƒIƒuƒWƒFƒNƒgI—¹‰»
+	////ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆçµ‚äº†åŒ–
 	//if (object != nullptr)
 	//{
 	//	delete object;
@@ -124,43 +138,46 @@ void SceneGame::Finalize()
 		BGMmain = nullptr;
 	}
 
-	//ƒvƒŒƒCƒ„[I—¹‰»
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼çµ‚äº†åŒ–
 	Player::Instance().Finalize();
 
 }
 
-// XVˆ—
+// æ›´æ–°å‡¦ç†
 void SceneGame::Update(float elapsedTime)
 {
-	//ƒJƒƒ‰ƒRƒ“ƒgƒ[ƒ‰[XVˆ—
+	//ã‚«ãƒ¡ãƒ©ã‚³ãƒ³ãƒˆãƒ­ãƒ¼ãƒ©ãƒ¼æ›´æ–°å‡¦ç†
 	DirectX::XMFLOAT3 target = Player::Instance().GetPosition();
 	target.y += 1.7f;
 	target.z += 10.5f;
 	cameraController->SetTarget(target);
 	cameraController->Update(elapsedTime);
-	//ƒXƒe[ƒWXVˆ—
+	//ã‚¹ãƒ†ãƒ¼ã‚¸æ›´æ–°å‡¦ç†
 	stage->Update(elapsedTime);
-	////ƒIƒuƒWƒFƒNƒg
+	////ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 	//object->Update(elapsedTime);
-	//ƒvƒŒƒCƒ„[XVˆ—
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æ›´æ–°å‡¦ç†
 	Player::Instance().Update(elapsedTime);
-	//ƒGƒlƒ~[XVˆ—
+	//ã‚¨ãƒãƒŸãƒ¼æ›´æ–°å‡¦ç†
 	EnemyManager::Instance().Update(elapsedTime);
-	////ƒIƒuƒWƒFƒNƒgXVˆ—
+	////ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæ›´æ–°å‡¦ç†
 	//objectManager::Instance().Update(elapsedTime);
-	//ƒGƒtƒFƒNƒgXVˆ—
+	//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆæ›´æ–°å‡¦ç†
 	EffectManager::Instance().Update(elapsedTime);
 
+  //çš„æ›´æ–°å‡¦ç†
+	matoManager::Instance().Update(elapsedTime);
+  
 	BGMmain->Play(false);
 
-	//ƒS[ƒ‹‚É‚Â‚¢‚½‚çƒQ[ƒ€ƒV[ƒ“‚ÌØ‚è‘Ö‚¦
+	//ã‚´ãƒ¼ãƒ«ã«ã¤ã„ãŸã‚‰ã‚²ãƒ¼ãƒ ã‚·ãƒ¼ãƒ³ã®åˆ‡ã‚Šæ›¿ãˆ
 	if (Player::Instance().PlayerPositionZ() < -362)
 	{
 		SceneManager::Instance().ChangeScene(new SceneResult);
 	}
 }
 
-// •`‰æˆ—
+// æç”»å‡¦ç†
 void SceneGame::Render()
 {
 	Graphics& graphics = Graphics::Instance();
@@ -168,46 +185,49 @@ void SceneGame::Render()
 	ShapeRenderer* shapeRenderer = graphics.GetShapeRenderer();
 	ModelRenderer* modelRenderer = graphics.GetModelRenderer();
 
-	//•`‰æˆ—
+	//æç”»å‡¦ç†
 	RenderContext rc;
 	rc.deviceContext = dc;
 	rc.renderState = graphics.GetRenderState();
 	rc.lightDirection = { 0.0f,-1.0f,0.0f };
 
-	//ƒJƒƒ‰ƒpƒ‰ƒ[ƒ^İ’è
+	//ã‚«ãƒ¡ãƒ©ãƒ‘ãƒ©ãƒ¡ãƒ¼ã‚¿è¨­å®š
 	Camera& camera = Camera::Instance();
 	rc.view = camera.GetView();
 	rc.projection = camera.GetProjection();
 	
-	// 3Dƒ‚ƒfƒ‹•`‰æ
+	// 3Dãƒ¢ãƒ‡ãƒ«æç”»
 	{
-		//ƒXƒe[ƒW•`‰æ
+		//ã‚¹ãƒ†ãƒ¼ã‚¸æç”»
 		stage->Render(rc, modelRenderer);
-		////ƒIƒuƒWƒFƒNƒg
+		////ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ
 		
-		//ƒvƒŒƒCƒ„[•`‰æ
+		//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼æç”»
 		Player::Instance().Render(rc, modelRenderer);
-		//ƒGƒlƒ~[•`‰æ
+		//ã‚¨ãƒãƒŸãƒ¼æç”»
 		EnemyManager::Instance().Render(rc, modelRenderer);
-		//ƒIƒuƒWƒFƒNƒg•`‰æ
+		//ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆæç”»
 		/*objectManager::Instance().Render(rc, modelRenderer);*/
 
-		//ƒGƒtƒFƒNƒg•`‰æ
+		//ã‚¨ãƒ•ã‚§ã‚¯ãƒˆæç”»
 		EffectManager::Instance().Render(rc.view, rc.projection);
+		//çš„æç”»
+		matoManager::Instance().Render(rc, modelRenderer);
 	}
 
-	// 3DƒfƒoƒbƒO•`‰æ
+	// 3Dãƒ‡ãƒãƒƒã‚°æç”»l
 	{
-		////ƒvƒŒƒCƒ„[ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
+		////ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
 		//Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-
-		////ƒGƒlƒ~[ƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
+		////ã‚¨ãƒãƒŸãƒ¼ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
 		//EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-		////ƒIƒuƒWƒFƒNƒgƒfƒoƒbƒOƒvƒŠƒ~ƒeƒBƒu•`‰æ
+		////ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
 		//objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		////çš„ãƒ‡ãƒãƒƒã‚°ãƒ—ãƒªãƒŸãƒ†ã‚£ãƒ–æç”»
+		//matoManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
 	}
 
-	// 2DƒXƒvƒ‰ƒCƒg•`‰æ
+	// 2Dã‚¹ãƒ—ãƒ©ã‚¤ãƒˆæç”»
 	{
 		float screenWindth = 220.0f;
 		float screenHeight = 220.0f;
@@ -239,9 +259,9 @@ void SceneGame::Render()
 	}
 }
 
-// GUI•`‰æ
+// GUIæç”»
 void SceneGame::DrawGUI()
 {
-	//ƒvƒŒƒCƒ„[ƒfƒoƒbƒO•`‰æ
+	//ãƒ—ãƒ¬ã‚¤ãƒ¤ãƒ¼ãƒ‡ãƒãƒƒã‚°æç”»
 	Player::Instance().DrawDebugGUI();
 }

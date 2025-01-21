@@ -97,7 +97,7 @@ protected:
 	};
 
 	float radius = 0.5f;
-	float gravity = -30.0f;
+	float gravity = 0.0f;
 	float height = 2.0f;
 	float invincibleTimer;
 	float friction = 15.0f;
