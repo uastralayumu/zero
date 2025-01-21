@@ -165,14 +165,14 @@ void SceneGame::Render()
 
 	// 3Dデバッグ描画l
 	{
-		//プレイヤーデバッグプリミティブ描画
-		Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-		//エネミーデバッグプリミティブ描画
-		EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-		//オブジェクトデバッグプリミティブ描画
-		objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-		//的デバッグプリミティブ描画
-		matoManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		////プレイヤーデバッグプリミティブ描画
+		//Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		////エネミーデバッグプリミティブ描画
+		//EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		////オブジェクトデバッグプリミティブ描画
+		//objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		////的デバッグプリミティブ描画
+		//matoManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
 	}
 
 	// 2Dスプライト描画
