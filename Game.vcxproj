@@ -132,6 +132,9 @@
     <ClInclude Include="Source\EnemySlime.h" />
     <ClInclude Include="Source\Framework.h" />
     <ClInclude Include="Source\MathUtils.h" />
+    <ClInclude Include="Source\mato.h" />
+    <ClInclude Include="Source\matoEnemy.h" />
+    <ClInclude Include="Source\matoManager.h" />
     <ClInclude Include="Source\object.h" />
     <ClInclude Include="Source\objectEnemy.h" />
     <ClInclude Include="Source\objectManager.h" />
@@ -187,6 +190,8 @@
     <ClCompile Include="Source\Framework.cpp" />
     <ClCompile Include="Source\Main.cpp" />
     <ClCompile Include="Source\MathUtils.cpp" />
+    <ClCompile Include="Source\matoEnemy.cpp" />
+    <ClCompile Include="Source\matoManager.cpp" />
     <ClCompile Include="Source\object.cpp" />
     <ClCompile Include="Source\objectEnemy.cpp" />
     <ClCompile Include="Source\objectManager.cpp" />

@@ -10,6 +10,8 @@
 #include"EffectManager.h"
 #include"objectManager.h"
 #include"objectEnemy.h"
+#include"matoManager.h"
+#include"matoEnemy.h"
 // 初期化
 void SceneGame::Initialize()
 {
@@ -53,9 +55,16 @@ void SceneGame::Initialize()
 	for (int i = 0; i < 2; ++i)
 	{
 		objectEnemy* object = new objectEnemy();
-		object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 10));
+		object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 5, 10));
 		object->SetTerritory(object->GetPosition(), 10.0f);
 		enemyManager.Register(object);
+	}
+	for (int i = 0; i < 2; ++i)
+	{
+		matoEnemy* mato = new matoEnemy();
+		mato->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 15));
+		mato->SetTerritory(mato->GetPosition(), 10.0f);
+		enemyManager.Register(mato);
 	}
 }
 
@@ -66,6 +75,8 @@ void SceneGame::Finalize()
 	EnemyManager::Instance().Clear();
 	//エネミー終了化
 	objectManager::Instance().Clear();
+	//的終了化
+	matoManager::Instance().Clear();
 	//カメラコントローラー終了化
 	if (cameraController != nullptr)
 	{
@@ -110,6 +121,8 @@ void SceneGame::Update(float elapsedTime)
 	objectManager::Instance().Update(elapsedTime);
 	//エフェクト更新処理
 	EffectManager::Instance().Update(elapsedTime);
+	//的更新処理
+	matoManager::Instance().Update(elapsedTime);
 }
 
 // 描画処理
@@ -146,17 +159,20 @@ void SceneGame::Render()
 
 		//エフェクト描画
 		EffectManager::Instance().Render(rc.view, rc.projection);
+		//的描画
+		matoManager::Instance().Render(rc, modelRenderer);
 	}
 
 	// 3Dデバッグ描画l
 	{
-		////プレイヤーデバッグプリミティブ描画
-		//Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-
-		////エネミーデバッグプリミティブ描画
-		//EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-		////オブジェクトデバッグプリミティブ描画
-		//objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		//プレイヤーデバッグプリミティブ描画
+		Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		//エネミーデバッグプリミティブ描画
+		EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		//オブジェクトデバッグプリミティブ描画
+		objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		//的デバッグプリミティブ描画
+		matoManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
 	}
 
 	// 2Dスプライト描画

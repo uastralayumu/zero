@@ -421,7 +421,7 @@ void  Player::CollisitionProjectilesVsEnemies()
 				projectile->GetPosition(),
 				projectile->GetRaidus(),
 				enemy->GetPosition(),
-				enemy->GetRadius(),
+				enemy->GetRadius() *2,
 				enemy->GetHeight(),
 				outPositon))
 			{

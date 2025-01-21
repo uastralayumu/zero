@@ -1,32 +1,32 @@
-#include "objectEnemy.h"
+#include "matoEnemy.h"
 #include "MathUtils.h"
 #include "Player.h"
 #include "ProjectileStraight.h"
 
 //コンストラクタ
-objectEnemy::objectEnemy()
+matoEnemy::matoEnemy()
 {
-	model = new Model("Data/Model/object/debris1.mdl");
+	model = new Model("Data/Model/mato/mato.mdl");
 
 	//モデルが大きいのでスケーリング
 	scale.x = scale.y = scale.z = 0.50f;
 
 	//幅、高さ設定
-	radius = 1.9f;
-	height = 2.5f;
+	radius = 1.0f;
+	height = 3.0f;
 
 	//徘徊ステートへ遷移
 	SetWanderState();
 }
 
 //デストラクタ
-objectEnemy::~objectEnemy()
+matoEnemy::~matoEnemy()
 {
 	delete model;
 }
 
 //更新処理
-void objectEnemy::Update(float elapsedTime)
+void matoEnemy::Update(float elapsedTime)
 {
 	//ステート毎の更新処理
 	switch (state)
@@ -51,24 +51,14 @@ void objectEnemy::Update(float elapsedTime)
 	UpdateInvincibleTimer(elapsedTime);
 
 	//オブジェクト行列を更新
-	//UpdateTransform();
-	//スケール行列を作成
-	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
-	//回転行列を作成
-	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
-	//位置行列を作成
-	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y+1.6, position.z);
-	//3つの行列を組み合わせ、ワールド行列を作成
-	DirectX::XMMATRIX W = S * R * T;
-	//計算したワールド行列を取り出す
-	DirectX::XMStoreFloat4x4(&transform, W);
+	UpdateTransform();
 
 	//モデル行列更新
 	model->UpdateTransform();
 }
 
 //描画処理
-void objectEnemy::Render(const RenderContext& rc, ModelRenderer* renderer)
+void matoEnemy::Render(const RenderContext& rc, ModelRenderer* renderer)
 {
 	renderer->Render(rc, transform, model, ShaderId::Lambert);
 
@@ -77,13 +67,13 @@ void objectEnemy::Render(const RenderContext& rc, ModelRenderer* renderer)
 }
 
 //デバッグプリミティブ描画
-void objectEnemy::RenderDebugPrimitive(const RenderContext& rc, ShapeRenderer* renderer)
+void matoEnemy::RenderDebugPrimitive(const RenderContext& rc, ShapeRenderer* renderer)
 {
 	//基底クラスのデバッグプリミティブ描画
 	Enemy::RenderDebugPrimitive(rc, renderer);
 
 	//縄張り範囲をデバッグ円柱描画
-	renderer->RenderCylinder(rc, territoryOrigin, territoryRange, 1.0f, DirectX::XMFLOAT4(0, -1, 0, 1));
+	renderer->RenderCylinder(rc, territoryOrigin, territoryRange, 1.0f, DirectX::XMFLOAT4(0, 1, 0, 1));
 
 	//ターゲット位置をデバッグ球描画
 	renderer->RenderSphere(rc, targetPosition, 1.0f, DirectX::XMFLOAT4(1, 1, 0, 1));
@@ -93,14 +83,14 @@ void objectEnemy::RenderDebugPrimitive(const RenderContext& rc, ShapeRenderer* r
 }
 
 //縄張り設定
-void objectEnemy::SetTerritory(const DirectX::XMFLOAT3& origin, float range)
+void matoEnemy::SetTerritory(const DirectX::XMFLOAT3& origin, float range)
 {
 	territoryOrigin = origin;
 	territoryRange = range;
 }
 
 //ターゲット位置をランダム設定
-void objectEnemy::SetRandomTargetPosition()
+void matoEnemy::SetRandomTargetPosition()
 {
 	float theta = MathUtils::RandomRange(-DirectX::XM_PI, DirectX::XM_PI);
 	float range = MathUtils::RandomRange(0.0f, territoryRange);
@@ -110,7 +100,7 @@ void objectEnemy::SetRandomTargetPosition()
 }
 
 //目標地点へ移動
-void objectEnemy::MoveToTarget(float elapsedTime, float moveSpeedRate, float turnSpeedRate)
+void matoEnemy::MoveToTarget(float elapsedTime, float moveSpeedRate, float turnSpeedRate)
 {
 	//ターゲット方向への進行ベクトルを算出
 	float vx = targetPosition.x - position.x;
@@ -125,7 +115,7 @@ void objectEnemy::MoveToTarget(float elapsedTime, float moveSpeedRate, float tur
 }
 
 //徘徊ステートへ遷移
-void objectEnemy::SetWanderState()
+void matoEnemy::SetWanderState()
 {
 	state = State::Wander;
 
@@ -136,7 +126,7 @@ void objectEnemy::SetWanderState()
 }
 
 //徘徊ステート更新処理
-void objectEnemy::UpdateWanderState(float elapsedTime)
+void matoEnemy::UpdateWanderState(float elapsedTime)
 {
 	//目標地点までXZ平面での距離判定
 	float vx = targetPosition.x - position.x;
@@ -160,14 +150,14 @@ void objectEnemy::UpdateWanderState(float elapsedTime)
 }
 
 //死亡した時に呼ばれる
-void objectEnemy::OnDead()
+void matoEnemy::OnDead()
 {
 	//自信を破棄
 	Destroy();
 }
 
 //プレイヤー索敵
-bool objectEnemy::SearchPlayer()
+bool matoEnemy::SearchPlayer()
 {
 	//プレイヤーとの高低差を考慮して3Dでの距離判定をする
 	const DirectX::XMFLOAT3& playerPosition = Player::Instance().GetPosition();
@@ -196,7 +186,7 @@ bool objectEnemy::SearchPlayer()
 
 
 //待機ステートへ遷移
-void objectEnemy::SetIdleState()
+void matoEnemy::SetIdleState()
 {
 	state = State::Idle;
 
@@ -206,7 +196,7 @@ void objectEnemy::SetIdleState()
 }
 
 //待機ステート更新処理
-void objectEnemy::UpdateIdleState(float elapsedTime)
+void matoEnemy::UpdateIdleState(float elapsedTime)
 {
 	//タイマー処理
 	stateTimer -= elapsedTime;
@@ -226,7 +216,7 @@ void objectEnemy::UpdateIdleState(float elapsedTime)
 }
 
 //攻撃ステート遷移
-void objectEnemy::SetAttackState()
+void matoEnemy::SetAttackState()
 {
 	state = State::Attack;
 
@@ -234,7 +224,7 @@ void objectEnemy::SetAttackState()
 }
 
 //追跡ステート更新処理
-void objectEnemy::UpdateAttackState(float elapsedTime)
+void matoEnemy::UpdateAttackState(float elapsedTime)
 {
 	//目標地点をプレイヤー位置に設定
 	targetPosition = Player::Instance().GetPosition();

@@ -21,6 +21,7 @@ ProjectileStraight::~ProjectileStraight()
 void ProjectileStraight::Update(float elapsedTime)
 {
 	//õ–½ˆ—
+	lifeTimer -= 0.01f;
 	GamePad& gamePad = Input::Instance().GetGamePad();
 	if (lifeTimer < 0.0f || gamePad.GetButtonDown() & GamePad::BTN_Y)
 	{

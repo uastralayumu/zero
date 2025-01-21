@@ -97,11 +97,11 @@ protected:
 	};
 
 	float radius = 0.5f;
-	float gravity = -30.0f;
+	float gravity = 0.0f;
 	float height = 2.0f;
 	float invincibleTimer;
 	float friction = 15.0f;
-	int health = 5;
+	int health = 1;
 	float accleration = 50.0f;
 	float maxMoveSpeed = 5.0f;
 	float moveVecX = 0.0f;
