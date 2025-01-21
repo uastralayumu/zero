@@ -5,6 +5,7 @@
 #include"CameraController.h"
 #include"Scene.h"
 #include "System/Sprite.h"
+#include"System/AudioSource.h"
 #include"object.h"
 
 // ÉQÅ[ÉÄÉVÅ[Éì
@@ -32,6 +33,9 @@ private:
 	Stage* stage = nullptr;
 	Sprite* sprite = nullptr;
 	Sprite* dangan = nullptr;
+	Sprite* distance = nullptr;
+	Sprite* presentlocation = nullptr;
 	CameraController* cameraController = nullptr;
 	object* object = nullptr;
+	AudioSource* BGMmain = nullptr;
 };

@@ -6,14 +6,14 @@
 //コンストラクタ
 objectEnemy::objectEnemy()
 {
-	model = new Model("Data/Model/object/debris1.mdl");
+	model = new Model("Data/Model/object/debris.mdl");
 
 	//モデルが大きいのでスケーリング
 	scale.x = scale.y = scale.z = 0.50f;
 
 	//幅、高さ設定
-	radius = 0.5f;
-	height = 1.0f;
+	radius = 2.0f;
+	height = 4.0f;
 
 	//徘徊ステートへ遷移
 	SetWanderState();
@@ -28,30 +28,39 @@ objectEnemy::~objectEnemy()
 //更新処理
 void objectEnemy::Update(float elapsedTime)
 {
-	//ステート毎の更新処理
-	switch (state)
-	{
-	case State::Wander:
-		UpdateWanderState(elapsedTime);
-		break;
-	case State::Idle:
-		UpdateIdleState(elapsedTime);
-		break;
-	case State::Attack:
-		UpdateAttackState(elapsedTime);
-		break;
-	}
+	////ステート毎の更新処理
+	//switch (state)
+	//{
+	//case State::Wander:
+	//	UpdateWanderState(elapsedTime);
+	//	break;
+	//case State::Idle:
+	//	UpdateIdleState(elapsedTime);
+	//	break;
+	//case State::Attack:
+	//	UpdateAttackState(elapsedTime);
+	//	break;
+	//}
 	//速力処理更新
 	UpdateVelocity(elapsedTime);
 
-	//弾丸更新処理
-	projectileManager.Update(elapsedTime);
+	////弾丸更新処理
+	//projectileManager.Update(elapsedTime);
 
 	//無敵時間更新
 	UpdateInvincibleTimer(elapsedTime);
 
-	//オブジェクト行列を更新
-	UpdateTransform();
+	//スケール行列を作成
+	DirectX::XMMATRIX S = DirectX::XMMatrixScaling(scale.x, scale.y, scale.z);
+	//回転行列を作成
+	DirectX::XMMATRIX R = DirectX::XMMatrixRotationRollPitchYaw(angle.x, angle.y, angle.z);
+	//位置行列を作成
+	DirectX::XMMATRIX T = DirectX::XMMatrixTranslation(position.x, position.y + 2, position.z);
+	//3つの行列を組み合わせ、ワールド行列を作成
+	DirectX::XMMATRIX W = S * R * T;
+	//計算したワールド行列を取り出す
+	DirectX::XMStoreFloat4x4(&transform, W);
+	//UpdateTransform();
 
 	//モデル行列更新
 	model->UpdateTransform();
@@ -110,8 +119,8 @@ void objectEnemy::MoveToTarget(float elapsedTime, float moveSpeedRate, float tur
 	vz /= dist;
 
 	//移動処理
-	Move(elapsedTime, vx, vz, moveSpeed * moveSpeedRate);
-	Turn(elapsedTime, vx, vz, turnSpeed * turnSpeedRate);
+	//Move(elapsedTime, vx, vz, moveSpeed * moveSpeedRate);
+	/*Turn(elapsedTime, vx, vz, turnSpeed * turnSpeedRate);*/
 }
 
 //徘徊ステートへ遷移
