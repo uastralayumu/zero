@@ -2,6 +2,7 @@
 
 #include "System/Sprite.h"
 #include "Scene.h"
+#include"System/AudioSource.h"
 
 class SceneResult :public Scene
 {
@@ -26,4 +27,5 @@ public:
 
 private:
 	Sprite* sprite = nullptr;
+	AudioSource* BGMresult = nullptr;
 };

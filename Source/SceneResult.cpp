@@ -5,12 +5,15 @@
 #include"SceneGame.h"
 #include"SceneManager.h"
 #include"SceneLoading.h"
+#include"System/Audio.h"
 
 //初期化
 void SceneResult::Initialize()
 {
 	//スプライト初期化
 	sprite = new Sprite("Data/Sprite/result.png");
+
+	BGMresult = Audio::Instance().LoadAudioSource("Data/Sound/BGM_main - .wav");
 }
 
 //終了化
@@ -21,6 +24,11 @@ void SceneResult::Finalize()
 	{
 		delete sprite;
 		sprite = nullptr;
+	}
+	if (BGMresult != nullptr)
+	{
+		delete BGMresult;
+		BGMresult = nullptr;
 	}
 }
 
@@ -35,6 +43,7 @@ void SceneResult::Update(float elapsedTime)
 	{
 		SceneManager::Instance().ChangeScene(new SceneLoading(new SceneTitle));
 	}
+	BGMresult->Play(false);
 }
 
 //描画処理

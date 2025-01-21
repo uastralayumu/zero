@@ -65,7 +65,7 @@ void Player::Update(float elapsedTime)
 	{
 		move = 0.01f;
 	}
-	else move = 0.53f;
+	else move = 0.03f;
 
 	if (position.z <= -363)
 	{
