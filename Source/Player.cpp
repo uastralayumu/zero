@@ -67,7 +67,11 @@ void Player::Update(float elapsedTime)
 	}
 	else move = 0.03f;
 
-	if (position.z <= -363) move = 0;
+	if (position.z <= -363)
+	{
+		move = 0;
+		position.z = -363;
+	}
 
 	position.z -= move;
 }
@@ -207,7 +211,7 @@ void Player::CollisionPlayerVsEnemies()
 		if (Collision::IntersectCylinderVsCylinder(
 			position,radius,height,
 			enemy->GetPosition(),
-			enemy->GetRadius(),
+			enemy->GetRadius() ,
 			enemy->GetHeight(),
 			outPosition))
 		{
@@ -425,7 +429,6 @@ void  Player::CollisitionProjectilesVsEnemies()
 		for (int j = 0; j < enemyCount; ++j)
 		{
 			Enemy* enemy = enemyManager.GetEnemy(j);
-
 			//衝突処理
 			DirectX::XMFLOAT3 outPositon;
 			if (Collision::IntersectSphereVsCylinder(
@@ -441,7 +444,7 @@ void  Player::CollisitionProjectilesVsEnemies()
 				{
 					//吹き飛ばす
 					{
-						DirectX::XMFLOAT3 impulse;
+						/*DirectX::XMFLOAT3 impulse;
 						float pow = 10.0f;
 						const DirectX::XMFLOAT3& e = enemy->GetPosition();
 						const DirectX::XMFLOAT3& p = projectile->GetPosition();
@@ -453,7 +456,7 @@ void  Player::CollisitionProjectilesVsEnemies()
 						impulse.x = vx * pow;
 						impulse.y = pow * 0.5f;
 						impulse.z = vz + pow;
-						enemy->AddImpulse(impulse);
+						enemy->AddImpulse(impulse);*/
 					}
 
 					//ヒットエフェクト再生

@@ -29,7 +29,7 @@ void SceneTitle::Update(float elapsedTime)
 	GamePad& gamePad = Input::Instance().GetGamePad();
 
 	//何かボタンを押したらゲームシーンへの切り替え
-	const GamePadButton anyButton = GamePad::BTN_Y;
+	const GamePadButton anyButton = GamePad::BTN_X;
 	if (gamePad.GetButtonDown() & anyButton)
 	{
 		SceneManager::Instance().ChangeScene(new SceneLoading(new SceneGame));

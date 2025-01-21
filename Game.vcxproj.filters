@@ -183,6 +183,9 @@
     <ClInclude Include="Source\objectEnemy.h">
       <Filter>Source</Filter>
     </ClInclude>
+    <ClInclude Include="Source\SceneResult.h">
+      <Filter>Source</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="External\imgui-docking\imgui.cpp">
@@ -327,6 +330,9 @@
       <Filter>Source</Filter>
     </ClCompile>
     <ClCompile Include="Source\objectEnemy.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\SceneResult.cpp">
       <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>

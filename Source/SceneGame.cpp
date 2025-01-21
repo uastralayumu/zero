@@ -10,6 +10,9 @@
 #include"EffectManager.h"
 #include"objectManager.h"
 #include"objectEnemy.h"
+#include"SceneResult.h"
+#include"System/Audio.h"
+
 // 初期化
 void SceneGame::Initialize()
 {
@@ -19,6 +22,12 @@ void SceneGame::Initialize()
 	sprite = new Sprite("Data/Sprite/aim.png");
 
 	dangan = new Sprite("Data/Sprite/UI_tama.png");
+
+	distance = new Sprite("Data/Sprite/UI_position.png");
+
+	presentlocation = new Sprite("Data/Sprite/UI_point.png");
+
+	BGMmain = Audio::Instance().LoadAudioSource("Data/Sound/BGM_main - .wav");
 
 	//プレイヤー初期化
 	Player::Instance().Initialize();
@@ -42,18 +51,18 @@ void SceneGame::Initialize()
 
 	//エネミー初期化
 	EnemyManager& enemyManager = EnemyManager::Instance();
-	for (int i = 0; i < 2; ++i)
+	/*for (int i = 0; i < 2; ++i)
 	{
 		EnemySlime* slime = new EnemySlime();
 		slime->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
 		slime->SetTerritory(slime->GetPosition(), 10.0f);
 		enemyManager.Register(slime);
-	}
+	}*/
 	/*objectManager& objectManager = objectManager::Instance();*/
 	for (int i = 0; i < 2; ++i)
 	{
 		objectEnemy* object = new objectEnemy();
-		object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 10));
+		object->SetPosition(DirectX::XMFLOAT3(i * 5.0f, 0, 10));
 		object->SetTerritory(object->GetPosition(), 10.0f);
 		enemyManager.Register(object);
 	}
@@ -65,7 +74,7 @@ void SceneGame::Finalize()
 	//エネミー終了化
 	EnemyManager::Instance().Clear();
 	//エネミー終了化
-	objectManager::Instance().Clear();
+	/*objectManager::Instance().Clear();*/
 	//カメラコントローラー終了化
 	if (cameraController != nullptr)
 	{
@@ -84,6 +93,36 @@ void SceneGame::Finalize()
 	//	delete object;
 	//	object = nullptr;
 	//}
+
+	if (sprite != nullptr)
+	{
+		delete sprite;
+		sprite = nullptr;
+	}
+
+	if (dangan != nullptr)
+	{
+		delete dangan;
+		dangan = nullptr;
+	}
+
+	if (distance != nullptr)
+	{
+		delete distance;
+		distance = nullptr;
+	}
+
+	if (presentlocation != nullptr)
+	{
+		delete presentlocation;
+		presentlocation = nullptr;
+	}
+
+	if (BGMmain != nullptr)
+	{
+		delete BGMmain;
+		BGMmain = nullptr;
+	}
 
 	//プレイヤー終了化
 	Player::Instance().Finalize();
@@ -107,10 +146,18 @@ void SceneGame::Update(float elapsedTime)
 	Player::Instance().Update(elapsedTime);
 	//エネミー更新処理
 	EnemyManager::Instance().Update(elapsedTime);
-	//オブジェクト更新処理
-	objectManager::Instance().Update(elapsedTime);
+	////オブジェクト更新処理
+	//objectManager::Instance().Update(elapsedTime);
 	//エフェクト更新処理
 	EffectManager::Instance().Update(elapsedTime);
+
+	BGMmain->Play(false);
+
+	//ゴールについたらゲームシーンの切り替え
+	if (Player::Instance().PlayerPositionZ() < -362)
+	{
+		SceneManager::Instance().ChangeScene(new SceneResult);
+	}
 }
 
 // 描画処理
@@ -143,7 +190,7 @@ void SceneGame::Render()
 		//エネミー描画
 		EnemyManager::Instance().Render(rc, modelRenderer);
 		//オブジェクト描画
-		objectManager::Instance().Render(rc, modelRenderer);
+		/*objectManager::Instance().Render(rc, modelRenderer);*/
 
 		//エフェクト描画
 		EffectManager::Instance().Render(rc.view, rc.projection);
@@ -168,7 +215,16 @@ void SceneGame::Render()
 		float mouseposy = Player::Instance().Mouseposy();
 		float danganCount = Player::Instance().DanganCount();
 		int maxdanganCount = Player::Instance().MaxDanganCount();
-
+		float playerpositionz = Player::Instance().PlayerPositionZ();
+		playerpositionz = ((playerpositionz / -363) * 1910) - 32;
+		distance->Render(rc,
+			0, 0, 0, 1910,1080,
+			0,
+			1, 1, 1, 0.5f);
+		presentlocation->Render(rc,
+			playerpositionz, 50, 0, 64, 32,
+			0,
+			1, 1, 1, 1);
 		sprite->Render(rc,
 			mouseposx - screenWindth * 0.5f, mouseposy - screenHeight * 0.5f, 0, screenWindth, screenHeight,
 			0,
