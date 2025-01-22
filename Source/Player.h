@@ -46,6 +46,8 @@ public:
 	int PlayerPositionZ() const { return position.z; }
 
 	float PlayerMover() const { return move; }
+
+	int HighScore() { return score; }
 protected:
 	//’…’n‚µ‚½Žž‚ÉŒÄ‚Î‚ê‚é
 	void OnLanding() override;

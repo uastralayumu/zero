@@ -6,7 +6,7 @@
 #include"SceneManager.h"
 #include"SceneLoading.h"
 #include"System/Audio.h"
-
+#include"Player.h"
 //èâä˙âª
 void SceneResult::Initialize()
 {
@@ -14,6 +14,14 @@ void SceneResult::Initialize()
 	sprite = new Sprite("Data/Sprite/result.png");
 
 	BGMresult = Audio::Instance().LoadAudioSource("Data/Sound/BGM_main - .wav");
+
+	for (int i = 0; i <= 3; i++)
+	{
+		if (highscore[i] < Player::Instance().HighScore())
+		{
+			highscore[i] = Player::Instance().HighScore();
+		}
+	}
 }
 
 //èIóπâª
