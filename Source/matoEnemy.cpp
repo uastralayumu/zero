@@ -28,24 +28,24 @@ matoEnemy::~matoEnemy()
 //更新処理
 void matoEnemy::Update(float elapsedTime)
 {
-	//ステート毎の更新処理
-	switch (state)
-	{
-	case State::Wander:
-		UpdateWanderState(elapsedTime);
-		break;
-	case State::Idle:
-		UpdateIdleState(elapsedTime);
-		break;
-	case State::Attack:
-		UpdateAttackState(elapsedTime);
-		break;
-	}
+	////ステート毎の更新処理
+	//switch (state)
+	//{
+	//case State::Wander:
+	//	UpdateWanderState(elapsedTime);
+	//	break;
+	//case State::Idle:
+	//	UpdateIdleState(elapsedTime);
+	//	break;
+	//case State::Attack:
+	//	UpdateAttackState(elapsedTime);
+	//	break;
+	//}
 	//速力処理更新
 	UpdateVelocity(elapsedTime);
 
 	//弾丸更新処理
-	projectileManager.Update(elapsedTime);
+	//projectileManager.Update(elapsedTime);
 
 	//無敵時間更新
 	UpdateInvincibleTimer(elapsedTime);
@@ -110,8 +110,8 @@ void matoEnemy::MoveToTarget(float elapsedTime, float moveSpeedRate, float turnS
 	vz /= dist;
 
 	//移動処理
-	Move(elapsedTime, vx, vz, moveSpeed * moveSpeedRate);
-	Turn(elapsedTime, vx, vz, turnSpeed * turnSpeedRate);
+	//Move(elapsedTime, vx, vz, moveSpeed * moveSpeedRate);
+	//Turn(elapsedTime, vx, vz, turnSpeed * turnSpeedRate);
 }
 
 //徘徊ステートへ遷移
