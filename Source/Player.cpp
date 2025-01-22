@@ -63,9 +63,9 @@ void Player::Update(float elapsedTime)
 
 	if (gamePad.GetButton() & GamePad::BTN_X)
 	{
-		move = 0.01f;
+		move = 0.03f;
 	}
-	else move = 0.03f;
+	else move = 0.05f;
 
 	if (position.z <= -363)
 	{

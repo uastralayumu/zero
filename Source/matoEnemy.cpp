@@ -12,7 +12,7 @@ matoEnemy::matoEnemy()
 	scale.x = scale.y = scale.z = 0.50f;
 
 	//幅、高さ設定
-	radius = 1.0f;
+	radius = 0.5f;
 	height = 3.0f;
 
 	//徘徊ステートへ遷移
