@@ -21,4 +21,7 @@ public:
 
 	//スコア
 	virtual int GetScore() = 0;
+
+	//コンボ
+	virtual bool GetCombo() = 0;
 };

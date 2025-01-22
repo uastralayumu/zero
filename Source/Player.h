@@ -87,4 +87,5 @@ private:
 	AudioSource* hitSE = nullptr;
 
 	int score = 0;
+	int combo=0;
 };

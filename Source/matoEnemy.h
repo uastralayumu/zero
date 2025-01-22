@@ -24,7 +24,9 @@ public:
 	//“ê’£‚èİ’è
 	void SetTerritory(const DirectX::XMFLOAT3& origin, float range);
 
-	int GetScore() { return score; }
+	int GetScore() {return score; }
+
+	bool GetCombo() { return true; }
 
 private:
 
@@ -81,5 +83,4 @@ private:
 	float searchRange = 5.0f;
 	int score = 150;
 	ProjectileManager projectileManager;
-
 };

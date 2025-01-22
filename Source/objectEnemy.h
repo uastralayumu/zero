@@ -3,7 +3,7 @@
 #include"Enemy.h"
 #include"object.h"
 #include"ProjectileManager.h"
-
+#include"matoEnemy.h"
 //スライム
 class objectEnemy : public Enemy
 {
@@ -23,7 +23,7 @@ public:
 	//縄張り設定
 	void SetTerritory(const DirectX::XMFLOAT3& origin, float range);
 
-	int GetScore() { return score; }
+	int GetScore() {return score; }
 
 private:
 
@@ -54,6 +54,7 @@ private:
 	//攻撃ステート更新処理
 	void UpdateAttackState(float elapsedTime);
 
+	bool GetCombo() { return false; }
 private:
 
 	//ステート

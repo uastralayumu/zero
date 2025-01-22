@@ -474,6 +474,22 @@ void  Player::CollisitionProjectilesVsEnemies()
 
 					score += enemy->GetScore();
 
+
+					if (enemy->GetCombo())
+					{
+						combo += 1;
+					}
+					else
+					{
+						combo = 0;
+					}
+
+					if (combo >= 2)
+					{
+						score += 30;
+					}
+
+					
 					//’eŠÛ”j‰ó
 					projectile->Destroy();
 				}
