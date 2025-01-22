@@ -64,7 +64,7 @@ void SceneGame::Initialize()
 	/*objectManager& objectManager = objectManager::Instance();*/
 
 
-	DirectX::XMFLOAT3 p[26] = {
+	DirectX::XMFLOAT3 p[23] = {
 		{ -5, 1, -57 },
 		{ 4, 2, -60 },
 		{ -3.5, 1, -10 },
@@ -90,21 +90,9 @@ void SceneGame::Initialize()
 		{ -2.5, 1, -3 },//22
 		{ -1, -2, -30 },//23
 
-		
-		{ -4.5, 1, -230 },
-		{ -3.5, 1, -230 },
-		{ -2.5, 1, -230 },
-		//{ -1.5, -2, -230 },
-		
-		
-
-
-		
-
-
-
+	
 	};
-	for (int i = 0; i < 26; ++i)
+	for (int i = 0; i < 23; ++i)
 	{
 		objectEnemy* object = new objectEnemy();
 
@@ -115,7 +103,7 @@ void SceneGame::Initialize()
 		enemyManager.Register(object);
 	}
 	
-	DirectX::XMFLOAT3 mp[15] = {
+	DirectX::XMFLOAT3 mp[21] = {
 		{ -5, 1, -305 },
 		{ 2, 1, -15 },
 		{ -3, 3, -130 },
@@ -129,12 +117,12 @@ void SceneGame::Initialize()
 		{  0, 1, -210 },
 		{  2, 1, -210 },
 		{  4, 1, -210 },
-		/*{ 1, 1, -210 },
+		{ 1, 1, -210 },
 		{ 2, 1, -210 },
 		{ 3, 1, -210 },
 		{ 4, 1, -210 },
 		{ 5, 1, -210 },
-		{ 6, 1, -210 },*/
+		{ 6, 1, -210 },
 
 
 		{ 1.5, 1, -100 },
@@ -142,7 +130,7 @@ void SceneGame::Initialize()
 		{ -4, 1, -170 },
 		{ 5, 1, -200 },
 	};
-	for (int i = 0; i < 15; ++i)
+	for (int i = 0; i < 21; ++i)
 	{
 		matoEnemy* mato = new matoEnemy();
 		mato->SetPosition(mp[i]);
