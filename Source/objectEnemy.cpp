@@ -12,8 +12,8 @@ objectEnemy::objectEnemy()
 	scale.x = scale.y = scale.z = 0.50f;
 
 	//幅、高さ設定
-	radius = 2.0f;
-	height = 4.0f;
+	radius = 1.5f;
+	height = 2.5f;
 
 	//徘徊ステートへ遷移
 	SetWanderState();
@@ -73,9 +73,6 @@ void objectEnemy::Update(float elapsedTime)
 void objectEnemy::Render(const RenderContext& rc, ModelRenderer* renderer)
 {
 	renderer->Render(rc, transform, model, ShaderId::Lambert);
-
-	//弾丸描画処理
-	projectileManager.Render(rc, renderer);
 }
 
 //デバッグプリミティブ描画

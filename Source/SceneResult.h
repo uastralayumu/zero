@@ -27,6 +27,7 @@ public:
 
 private:
 	Sprite* sprite = nullptr;
+	Sprite* Score = nullptr;
 	AudioSource* BGMresult = nullptr;
 
 	int highscore[3] = { 0,0,0 };

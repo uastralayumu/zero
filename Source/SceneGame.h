@@ -35,6 +35,7 @@ private:
 	Sprite* dangan = nullptr;
 	Sprite* distance = nullptr;
 	Sprite* presentlocation = nullptr;
+	Sprite* Score = nullptr;
 	CameraController* cameraController = nullptr;
 	object* object = nullptr;
 	AudioSource* BGMmain = nullptr;

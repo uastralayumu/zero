@@ -71,8 +71,6 @@ private:
 	//’eŠÛ‚Æ“G‚ÌÕ“Ëˆ—
 	void CollisitionProjectilesVsEnemies();
 
-	void CollisitionProjectilesVsEnemies2();
-
 private:
 	Model* model = nullptr;
 	float moveSpeed = 5.0f;
@@ -87,7 +85,6 @@ private:
 	ProjectileManager projectileManager;
 	Effect*  hitEffect = nullptr;
 	AudioSource* hitSE = nullptr;
-
 	int score = 0;
 	int combo=0;
 };

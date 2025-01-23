@@ -12,9 +12,7 @@
 
 //初期化
 void Player::Initialize()
-{
-    model = new Model("Data/Model/Mr.Incredible/Mr.Incredible.mdl");
-	
+{	
 	//モデルが大きいのでスケーリング
 	scale.x = scale.y = scale.z = 0.01f;
 
@@ -46,18 +44,12 @@ void Player::Update(float elapsedTime)
 	InputMove(elapsedTime);
 	//オブジェクト行列を更新
 	UpdateTransform();
-	//モデル行列更新
-	model->UpdateTransform();
-	//ジャンプ入力処理
-	/*InputJump();*/
 	//弾丸入力処理
 	InputProjectile();
 	//速力処理更新
 	UpdateVelocity(elapsedTime);
 	//弾丸更新処理
 	projectileManager.Update(elapsedTime);
-	//プレイヤーと敵との衝突処理
-	CollisionPlayerVsEnemies();
 	//弾丸と敵の衝突判定
 	CollisitionProjectilesVsEnemies();
 
@@ -65,7 +57,7 @@ void Player::Update(float elapsedTime)
 	{
 		move = 0.03f;
 	}
-	else move = 0.05f;
+	else move = 1.05f;
 
 	if (position.z <= -363)
 	{
@@ -79,8 +71,6 @@ void Player::Update(float elapsedTime)
 //描画処理
 void Player::Render(const RenderContext& rc, ModelRenderer* renderer)
 {
-	renderer->Render(rc, transform, model, ShaderId::Lambert);
-
 	//弾丸描画処理
 	projectileManager.Render(rc, renderer);
 }
@@ -235,8 +225,6 @@ void Player::CollisionPlayerVsEnemies()
 	}
 
 }
-//object
-
 
 //デバッグプリミティブ描画
 void Player::RenderDebugPrimitive(const RenderContext& rc, ShapeRenderer* renderer)
@@ -281,140 +269,10 @@ void Player::InputProjectile()
 		projectile->Launch(dir, pos);
 		danganCount++;
 	}
-	//追尾弾丸発射
-	/*if (gamePad.GetButtonDown() & GamePad::BTN_Y)
-	{
-		前方向
-		DirectX::XMFLOAT3 dir;
-		dir.x = sinf(angle.y);
-		dir.y = 0;
-		dir.z = cosf(angle.y);
-
-		発射位置（プレイヤーの腰あたり）
-		DirectX::XMFLOAT3 pos;
-		pos.x = position.x;
-		pos.y = position.y + height * 0.5f;
-		pos.z = position.z;
-
-		ターゲット（デフォルトではプレイヤーの前方）
-		DirectX::XMFLOAT3 target;
-		target.x = pos.x + dir.x * 1000.0f;
-		target.y = pos.y + dir.y * 1000.0f;
-		target.z = pos.z + dir.z * 1000.0f;
-
-		一番近くの敵をターゲットにする
-		float dist = FLT_MAX;
-		EnemyManager& enemyManager = EnemyManager::Instance();
-		int enemyCount = enemyManager.GetEnemyCount();
-		for (int i = 0; i < enemyCount; ++i)
-		{
-			敵との距離判定
-			Enemy* enemy = EnemyManager::Instance().GetEnemy(i);
-			DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&position);
-			DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&enemy->GetPosition());
-			DirectX::XMVECTOR V = DirectX::XMVectorSubtract(E, P);
-			DirectX::XMVECTOR D = DirectX::XMVector3LengthSq(V);
-			float d;
-			DirectX::XMStoreFloat(&d, D);
-			if (d < dist)
-			{
-				dist = d;
-				target = enemy->GetPosition();
-				target.y += enemy->GetHeight() * 0.5;
-			}
-		}
-		objectManager& objectManager = objectManager::Instance();
-		int enemyCount2 = objectManager.GetEnemyCount();
-		for (int i = 0; i < enemyCount; ++i)
-		{
-			敵との距離判定
-			object* enemy = objectManager::Instance().GetEnemy(i);
-			DirectX::XMVECTOR P = DirectX::XMLoadFloat3(&position);
-			DirectX::XMVECTOR E = DirectX::XMLoadFloat3(&enemy->GetPosition());
-			DirectX::XMVECTOR V = DirectX::XMVectorSubtract(E, P);
-			DirectX::XMVECTOR D = DirectX::XMVector3LengthSq(V);
-			float d;
-			DirectX::XMStoreFloat(&d, D);
-			if (d < dist)
-			{
-				dist = d;
-				target = enemy->GetPosition();
-				target.y += enemy->GetHeight() * 0.5;
-			}
-		}
-
-		発射
-		ProjectileHoming* projectile = new ProjectileHoming(&projectileManager);
-		projectile->Launch(dir, pos, target);
-	}*/
+	
 }
 
-//object
-//弾丸と敵の衝突処理
-//void  Player::CollisitionProjectilesVsEnemies()
-//{
-//	objectManager& objectManager = objectManager::Instance();
-//
-//	//すべての弾丸とすべての敵を総当たりで衝突処理
-//	int projectileCount = projectileManager.GetProjectileCoust();
-//	int enemyCount = objectManager.GetEnemyCount();
-//	for (int i = 0; i < projectileCount; ++i)
-//	{
-//		Projectile* projectile = projectileManager.GetProjectile(i);
-//		for (int j = 0; j < enemyCount; ++j)
-//		{
-//			object* enemy = objectManager.GetEnemy(j);
-//
-//			//衝突処理
-//			DirectX::XMFLOAT3 outPositon;
-//			if (Collision::IntersectSphereVsCylinder(
-//				projectile->GetPosition(),
-//				projectile->GetRaidus(),
-//				enemy->GetPosition(),
-//				enemy->GetRadius(),
-//				enemy->GetHeight(),
-//				outPositon))
-//			{
-//				//ダメージを与える
-//				if (enemy->ApplyDamage(1, 0.5f))
-//				{
-//					//吹き飛ばす
-//					{
-//						DirectX::XMFLOAT3 impulse;
-//						float pow = 10.0f;
-//						const DirectX::XMFLOAT3& e = enemy->GetPosition();
-//						const DirectX::XMFLOAT3& p = projectile->GetPosition();
-//						float vx = e.x - p.x;
-//						float vz = e.z - p.z;
-//						float lengthXZ = sqrtf(vx * vx + vz * vz);
-//						vx /= lengthXZ;
-//						vz /= lengthXZ;
-//						impulse.x = vx * pow;
-//						impulse.y = pow * 0.5f;
-//						impulse.z = vz + pow;
-//						enemy->AddImpulse(impulse);
-//					}
-//
-//					//ヒットエフェクト再生
-//					{
-//						DirectX::XMFLOAT3 e = enemy->GetPosition();
-//						e.y += enemy->GetHeight() * 0.5f;
-//						hitEffect->Play(e);
-//					}
-//
-//					//ヒットSE再生
-//					{
-//						hitSE->Play(false);
-//					}
-//
-//					//弾丸破壊
-//					projectile->Destroy();
-//				}
-//			}
-//		}
-//	}
-//
-//}
+
 
 void  Player::CollisitionProjectilesVsEnemies()
 {
@@ -443,23 +301,6 @@ void  Player::CollisitionProjectilesVsEnemies()
 				if (enemy->ApplyDamage(1, 0.5f))
 				{
 					
-					//吹き飛ばす
-					{
-						/*DirectX::XMFLOAT3 impulse;
-						float pow = 10.0f;
-						const DirectX::XMFLOAT3& e = enemy->GetPosition();
-						const DirectX::XMFLOAT3& p = projectile->GetPosition();
-						float vx = e.x - p.x;
-						float vz = e.z - p.z;
-						float lengthXZ = sqrtf(vx * vx + vz * vz);
-						vx /= lengthXZ;
-						vz /= lengthXZ;
-						impulse.x = vx * pow;
-						impulse.y = pow * 0.5f;
-						impulse.z = vz + pow;
-						enemy->AddImpulse(impulse);*/
-					}
-
 					//ヒットエフェクト再生
 					{
 						DirectX::XMFLOAT3 e = enemy->GetPosition();
@@ -472,24 +313,25 @@ void  Player::CollisitionProjectilesVsEnemies()
 						hitSE->Play(false);
 					}
 
-					score += enemy->GetScore();
-
-
-					if (enemy->GetCombo())
 					{
-						combo += 1;
-					}
-					else
-					{
-						combo = 0;
-					}
+						score += enemy->GetScore();
 
-					if (combo >= 2)
-					{
-						score += 30;
-					}
 
-					
+						if (enemy->GetCombo())
+						{
+							combo += 1;
+						}
+						else
+						{
+							combo = 0;
+						}
+
+						if (combo >= 2)
+						{
+							score += 30;
+						}
+
+					}
 					//弾丸破壊
 					projectile->Destroy();
 				}

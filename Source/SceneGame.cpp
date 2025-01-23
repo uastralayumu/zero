@@ -30,6 +30,8 @@ void SceneGame::Initialize()
 
 	presentlocation = new Sprite("Data/Sprite/UI_point.png");
 
+	Score = new Sprite("Data/Sprite/number.png");
+
 	BGMmain = Audio::Instance().LoadAudioSource("Data/Sound/BGM_main - .wav");
 
 	//プレイヤー初期化
@@ -54,15 +56,6 @@ void SceneGame::Initialize()
 
 	//エネミー初期化
 	EnemyManager& enemyManager = EnemyManager::Instance();
-	/*for (int i = 0; i < 2; ++i)
-	{
-		EnemySlime* slime = new EnemySlime();
-		slime->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 0, 5));
-		slime->SetTerritory(slime->GetPosition(), 10.0f);
-		enemyManager.Register(slime);
-	}*/
-	/*objectManager& objectManager = objectManager::Instance();*/
-
 
 	DirectX::XMFLOAT3 p[23] = {
 		{ -5, 1, -57 },
@@ -95,9 +88,7 @@ void SceneGame::Initialize()
 	for (int i = 0; i < 23; ++i)
 	{
 		objectEnemy* object = new objectEnemy();
-
-		//object->SetPosition(DirectX::XMFLOAT3(i * 2.0f, 5, 10));
-		object->SetPosition(p[i]);
+	object->SetPosition(p[i]);
 
 		object->SetTerritory(object->GetPosition(), 10.0f);
 		enemyManager.Register(object);
@@ -118,11 +109,11 @@ void SceneGame::Initialize()
 		{  2, 1, -210 },
 		{  4, 1, -210 },
 		{ 1, 1, -210 },
-		{ 2, 1, -210 },
-		{ 3, 1, -210 },
-		{ 4, 1, -210 },
-		{ 5, 1, -210 },
-		{ 6, 1, -210 },
+		{ 2, 1, -310 },
+		{ 3, 1, -350 },
+		{ 4, 1, -410 },
+		{ 5, 1, -460 },
+		{ 6, 1, -350 },
 
 
 		{ 1.5, 1, -100 },
@@ -144,10 +135,6 @@ void SceneGame::Finalize()
 {
 	//エネミー終了化
 	EnemyManager::Instance().Clear();
-	//エネミー終了化
-	objectManager::Instance().Clear();
-	//的終了化
-	matoManager::Instance().Clear();
 
 	//カメラコントローラー終了化
 	if (cameraController != nullptr)
@@ -161,13 +148,6 @@ void SceneGame::Finalize()
 		delete stage;
 		stage = nullptr;
 	}
-	////オブジェクト終了化
-	//if (object != nullptr)
-	//{
-	//	delete object;
-	//	object = nullptr;
-	//}
-
 	if (sprite != nullptr)
 	{
 		delete sprite;
@@ -214,19 +194,12 @@ void SceneGame::Update(float elapsedTime)
 	cameraController->Update(elapsedTime);
 	//ステージ更新処理
 	stage->Update(elapsedTime);
-	////オブジェクト
-	//object->Update(elapsedTime);
 	//プレイヤー更新処理
 	Player::Instance().Update(elapsedTime);
 	//エネミー更新処理
 	EnemyManager::Instance().Update(elapsedTime);
-	////オブジェクト更新処理
-	//objectManager::Instance().Update(elapsedTime);
 	//エフェクト更新処理
 	EffectManager::Instance().Update(elapsedTime);
-
-  //的更新処理
-	matoManager::Instance().Update(elapsedTime);
   
 	BGMmain->Play(false);
 
@@ -260,15 +233,10 @@ void SceneGame::Render()
 	{
 		//ステージ描画
 		stage->Render(rc, modelRenderer);
-		////オブジェクト
-		
 		//プレイヤー描画
 		Player::Instance().Render(rc, modelRenderer);
 		//エネミー描画
 		EnemyManager::Instance().Render(rc, modelRenderer);
-		//オブジェクト描画
-		/*objectManager::Instance().Render(rc, modelRenderer);*/
-
 		//エフェクト描画
 		EffectManager::Instance().Render(rc.view, rc.projection);
 		//的描画
@@ -278,13 +246,13 @@ void SceneGame::Render()
 	// 3Dデバッグ描画l
 	{
 		////プレイヤーデバッグプリミティブ描画
-		//Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-		////エネミーデバッグプリミティブ描画
-		//EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-		////オブジェクトデバッグプリミティブ描画
-		//objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
-		////的デバッグプリミティブ描画
-		//matoManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		Player::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		//エネミーデバッグプリミティブ描画
+		EnemyManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		//オブジェクトデバッグプリミティブ描画
+		objectManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
+		//的デバッグプリミティブ描画
+		matoManager::Instance().RenderDebugPrimitive(rc, shapeRenderer);
 	}
 
 	// 2Dスプライト描画
@@ -316,12 +284,31 @@ void SceneGame::Render()
 				0,
 				1, 1, 1, 1);
 		}
+		
+		{
+			int score = Player::Instance().HighScore();
+			int i = 1;
+			int j = 0;
+			int k = 0;
+			while (i - 1 <= score)
+			{
+				k = score / i;
+				k = k % 10;
+				Score->Render(rc,
+					1870 - (j * 30), 60, 0, 50, 50,
+					(k * 100) , 0, 100, 100,
+					0,
+					1, 1, 1, 1);
+				j++;
+				i *= 10;
+			}
+		}
 	}
 }
 
 // GUI描画
 void SceneGame::DrawGUI()
 {
-	//プレイヤーデバッグ描画
-	Player::Instance().DrawDebugGUI();
+	////プレイヤーデバッグ描画
+	//Player::Instance().DrawDebugGUI();
 }

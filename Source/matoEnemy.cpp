@@ -61,9 +61,6 @@ void matoEnemy::Update(float elapsedTime)
 void matoEnemy::Render(const RenderContext& rc, ModelRenderer* renderer)
 {
 	renderer->Render(rc, transform, model, ShaderId::Lambert);
-
-	//弾丸描画処理
-	projectileManager.Render(rc, renderer);
 }
 
 //デバッグプリミティブ描画
