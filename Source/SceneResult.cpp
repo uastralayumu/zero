@@ -8,6 +8,7 @@
 #include"System/Audio.h"
 #include"Player.h"
 #include <fstream>
+
 int highscore[] = { 0,0,0 };
 
 int txtscore[] = {
@@ -27,67 +28,64 @@ void SceneResult::Initialize()
 
 	higtscore = Player::Instance().HighScore();
 
-	//for (int i = 0; i < 3; i++)
-	//{
-	//	if (highscore[i] < higtscore)
-	//	{
-	//		if (i < 2)
-	//		{
-	//			if (highscore[i] > highscore[i + 1])
-	//			{
-	//				if (i < 1)
-	//				{
-	//					if (highscore[i + 1] > highscore[i + 2])
-	//					{
-	//						highscore[i + 2] = highscore[i + 1];
-	//					}
-	//				}
-	//				highscore[i + 1] = highscore[i];
-	//			}
-	//		}
-	//		highscore[i] = higtscore;
-	//		break;
-	//	}
-	//}
 	for (int i = 0; i < 3; i++)
 	{
-		if (txtscore[i] < higtscore)
+		if (highscore[i] < higtscore)
 		{
-			
-			
-			if (i == 0)
+			if (i < 2)
 			{
-				std::ofstream ofs;
-				ofs.open("highscore1.txt");
-				if (!ofs) break;
-				ofs << higtscore;
-				ofs.close();
+				if (highscore[i] > highscore[i + 1])
+				{
+					if (i < 1)
+					{
+						if (highscore[i + 1] > highscore[i + 2])
+						{
+							highscore[i + 2] = highscore[i + 1];
+						}
+					}
+					highscore[i + 1] = highscore[i];
+				}
 			}
-			if (i == 1)
-			{
-				std::ofstream ofs;
-				ofs.open("highscore2.txt");
-				if (!ofs) break;
-				ofs << higtscore;
-				ofs.close();
-			}
-			if(i==2)
-			{
-				std::ofstream ofs;
-				ofs.open("highscore3.txt");
-				if (!ofs) break;
-				ofs << higtscore;
-				ofs.close();
-				break;
-			}
+			highscore[i] = higtscore;
 			break;
 		}
 	}
-	
-	for (int i = 0; i < 3; i++)
-	{
-		highscore[i] = txtscore[i];
-	}
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	if (txtscore[i] < higtscore)
+	//	{
+	//		
+	//		std::ofstream ofs;
+	//		
+	//		switch (i)
+	//		{
+	//		 case 0:
+	//			ofs.open("highscore1.txt");
+	//			if (!ofs) break;
+	//			ofs << higtscore;
+	//			ofs.close();
+	//			break;
+	//		 case 1:
+	//			ofs.open("highscore2.txt");
+	//			if (!ofs) break;
+	//			ofs << higtscore;
+	//			ofs.close();
+	//			break;
+	//		 case 2:
+	//			ofs.open("highscore3.txt");
+	//			if (!ofs) break;
+	//			ofs << higtscore;
+	//			ofs.close();
+	//			break;
+	//		}
+	//		break;
+	//	}
+	//}
+	//
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	highscore[i] = txtscore[i];
+	//}
 }
 
 //I—¹‰»
