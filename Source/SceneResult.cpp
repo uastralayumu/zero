@@ -7,8 +7,14 @@
 #include"SceneLoading.h"
 #include"System/Audio.h"
 #include"Player.h"
+#include <fstream>
+int highscore[] = { 0,0,0 };
 
-int highscore[3] = { 0,0,0 };
+int txtscore[] = {
+	#include "highscore1.txt",
+	#include "highscore2.txt",
+	#include "highscore3.txt",
+};
 //èâä˙âª
 void SceneResult::Initialize()
 {
@@ -21,27 +27,66 @@ void SceneResult::Initialize()
 
 	higtscore = Player::Instance().HighScore();
 
+	//for (int i = 0; i < 3; i++)
+	//{
+	//	if (highscore[i] < higtscore)
+	//	{
+	//		if (i < 2)
+	//		{
+	//			if (highscore[i] > highscore[i + 1])
+	//			{
+	//				if (i < 1)
+	//				{
+	//					if (highscore[i + 1] > highscore[i + 2])
+	//					{
+	//						highscore[i + 2] = highscore[i + 1];
+	//					}
+	//				}
+	//				highscore[i + 1] = highscore[i];
+	//			}
+	//		}
+	//		highscore[i] = higtscore;
+	//		break;
+	//	}
+	//}
 	for (int i = 0; i < 3; i++)
 	{
-		if (highscore[i] < higtscore)
+		if (txtscore[i] < higtscore)
 		{
-			if (i < 2)
+			
+			
+			if (i == 0)
 			{
-				if (highscore[i] > highscore[i + 1])
-				{
-					if (i < 1)
-					{
-						if (highscore[i + 1] > highscore[i + 2])
-						{
-							highscore[i + 2] = highscore[i + 1];
-						}
-					}
-					highscore[i + 1] = highscore[i];
-				}
+				std::ofstream ofs;
+				ofs.open("highscore1.txt");
+				if (!ofs) break;
+				ofs << higtscore;
+				ofs.close();
 			}
-			highscore[i] = higtscore;
+			if (i == 1)
+			{
+				std::ofstream ofs;
+				ofs.open("highscore2.txt");
+				if (!ofs) break;
+				ofs << higtscore;
+				ofs.close();
+			}
+			if(i==2)
+			{
+				std::ofstream ofs;
+				ofs.open("highscore3.txt");
+				if (!ofs) break;
+				ofs << higtscore;
+				ofs.close();
+				break;
+			}
 			break;
 		}
+	}
+	
+	for (int i = 0; i < 3; i++)
+	{
+		highscore[i] = txtscore[i];
 	}
 }
 
