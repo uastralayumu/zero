@@ -7,6 +7,8 @@
 #include"SceneLoading.h"
 #include"System/Audio.h"
 #include"Player.h"
+
+int highscore[3] = { 0,0,0 };
 //èâä˙âª
 void SceneResult::Initialize()
 {
@@ -17,11 +19,27 @@ void SceneResult::Initialize()
 
 	BGMresult = Audio::Instance().LoadAudioSource("Data/Sound/BGM_main - .wav");
 
-	for (int i = 0; i <= 3; i++)
+	higtscore = Player::Instance().HighScore();
+
+	for (int i = 0; i < 3; i++)
 	{
-		if (highscore[i] < Player::Instance().HighScore())
+		if (highscore[i] < higtscore)
 		{
-			highscore[i] = Player::Instance().HighScore();
+			if (i < 2)
+			{
+				if (highscore[i] > highscore[i + 1])
+				{
+					if (i < 1)
+					{
+						if (highscore[i + 1] > highscore[i + 2])
+						{
+							highscore[i + 2] = highscore[i + 1];
+						}
+					}
+					highscore[i + 1] = highscore[i];
+				}
+			}
+			highscore[i] = higtscore;
 			break;
 		}
 	}
@@ -90,7 +108,7 @@ void SceneResult::Render()
 				k = highscore[m] / i;
 				k = k % 10;
 				Score->Render(rc,
-					900 - (j * 100), 170 + m * 150, 0, 100, 50,
+					900 - (j * 100), 170 + m * 160, 0, 100, 50,
 					(k * 100), 0, 100, 100,
 					0,
 					1, 1, 1, 1);
@@ -98,25 +116,24 @@ void SceneResult::Render()
 				i *= 10;
 			}
 		}
-			int score = Player::Instance().HighScore();
+		int score = Player::Instance().HighScore();
+		{
+			int i = 1;
+			int j = 0;
+			int k = 0;
+			while (i - 1 <= score)
 			{
-				int i = 1;
-				int j = 0;
-				int k = 0;
-				while (i - 1 <= score)
-				{
-					k = score / i;
-					k = k % 10;
-					Score->Render(rc,
-						900 - (j * 100), 660, 0, 100, 50,
-						(k * 100), 0, 100, 100,
-						0,
-						1, 1, 1, 1);
-					j++;
-					i *= 10;
-				}
+				k = score / i;
+				k = k % 10;
+				Score->Render(rc,
+					900 - (j * 100), 660, 0, 100, 50,
+					(k * 100), 0, 100, 100,
+					0,
+					1, 1, 1, 1);
+				j++;
+				i *= 10;
 			}
-		
+		}	
 	}
 }
 

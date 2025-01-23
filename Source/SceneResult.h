@@ -30,5 +30,5 @@ private:
 	Sprite* Score = nullptr;
 	AudioSource* BGMresult = nullptr;
 
-	int highscore[3] = { 0,0,0 };
+	int higtscore = 0;
 };

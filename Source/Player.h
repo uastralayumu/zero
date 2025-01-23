@@ -86,5 +86,5 @@ private:
 	Effect*  hitEffect = nullptr;
 	AudioSource* hitSE = nullptr;
 	int score = 0;
-	int combo=0;
+	int combo = 0;
 };

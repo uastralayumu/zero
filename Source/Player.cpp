@@ -25,6 +25,8 @@ void Player::Initialize()
 	danganCount = 0;
 	position = { 0,0,0 };
 	angle = { 0,0,0 };
+	score = 0;
+	combo = 0;
 }
 
 //èIóπâª
