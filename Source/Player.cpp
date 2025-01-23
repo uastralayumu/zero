@@ -55,18 +55,31 @@ void Player::Update(float elapsedTime)
 	//íeä€Ç∆ìGÇÃè’ìÀîªíË
 	CollisitionProjectilesVsEnemies();
 
-	if (gamePad.GetButton() & GamePad::BTN_X)
+	if (danganCount != maxdanganCount)
 	{
-		move = 0.03f;
-	}
-	else move = 0.05f;
+		if (gamePad.GetButton() & GamePad::BTN_X)
+		{
+			move = 0.03f;
+			suscore += elapsedTime;
+		}
+		else move = 0.05f;
 
-	if (position.z <= -363)
+		if (suscore > 1)
+		{
+			suscore -= 1;
+			score -= 1;
+		}
+
+		if (position.z <= -363)
+		{
+			move = 0;
+			position.z = -363;
+		}
+	}
+	else
 	{
-		move = 0;
-		position.z = -363;
+		move = 0.3f;
 	}
-
 	position.z -= move;
 }
 

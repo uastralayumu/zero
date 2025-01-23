@@ -77,7 +77,7 @@ private:
 	float turnSpeed = DirectX::XMConvertToRadians(720);
 	float jumpSpeed = 12.0f;
 	float danganCount = 0;
-	int maxdanganCount = 10;
+	int maxdanganCount = 20;
 	int jumpCount = 0;
 	int jumpLimit = 2;
 	float mouseposx = 0;
@@ -87,4 +87,5 @@ private:
 	AudioSource* hitSE = nullptr;
 	int score = 0;
 	int combo = 0;
+	float suscore = 0;
 };

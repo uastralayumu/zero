@@ -57,7 +57,7 @@ void SceneGame::Initialize()
 	//エネミー初期化
 	EnemyManager& enemyManager = EnemyManager::Instance();
 
-	DirectX::XMFLOAT3 p[23] = {
+	DirectX::XMFLOAT3 p[26] = {
 		{ -5, 1, -57 },
 		{ 4, 2, -60 },
 		{ -3.5, 1, -10 },
@@ -82,10 +82,11 @@ void SceneGame::Initialize()
 		{ 1.3, 4, -45 },//21
 		{ -2.5, 1, -3 },//22
 		{ -1, -2, -30 },//23
-
-	
+		{ -2, 1, -220},
+		{ 1 , 1 ,-220},
+		{ 3, 1, -220},
 	};
-	for (int i = 0; i < 23; ++i)
+	for (int i = 0; i < 26; ++i)
 	{
 		objectEnemy* object = new objectEnemy();
 	object->SetPosition(p[i]);
